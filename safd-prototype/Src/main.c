@@ -43,6 +43,8 @@
 /* USER CODE BEGIN Includes */
 #include "flash.h"
 
+//https://github.com/vadzimyatskevich/STM32F103_SSD1306 << OLED lib
+
 
 /* USER CODE END Includes */
 
