@@ -142,3 +142,41 @@ FLASH_State Master_WriteToFlash_Page(SPI_HandleTypeDef* hspi,uint32_t flash_addr
 }
 
 
+FLASH_State Master_ReadFromFlash(SPI_HandleTypeDef* hspi,uint32_t flash_addr, uint8_t *pData, uint16_t size)
+{
+ //enable writing first
+//send command to chip
+ uint8_t commands[10+PAGE_SIZE*4];
+ uint8_t RxDummy[10+PAGE_SIZE*4];//max 1kB at a time
+	FLASH_State flash_status = FLASH_AVAILABLE;
+ commands[0]=READ4;//page read
+ commands[1]=(flash_addr>>24)&0xff; //highest byte first
+ commands[2]=(flash_addr>>16)&0xff; //2nd byte
+ commands[3]=(flash_addr>>8)&0xff; //3rd byte
+ commands[4]=(flash_addr)&0xff; //last byte
+ FLASH_BLOCK1_CHIP_ENABLE(); //enable the chip, CS=0
+ if(HAL_SPI_TransmitReceive(&hspi, commands,RxDummy, size+5,1000) != HAL_OK)
+ {
+		flash_status = FLASH_ERROR;
+		_Error_Handler(__FILE__, __LINE__);
+ }
+ FLASH_BLOCK1_CHIP_DISABLE(); //must disable first to enable chip writing.
+
+ //check status
+ /*
+ if(CheckIsWritingReadingComplete(100)!=0)//10ms. we use poling mode to write data, should be done after calling the code
+ {
+		flash_status = FLASH_ERROR;
+		_Error_Handler(__FILE__, __LINE__);
+ }
+ */
+
+ //transfer to destination buffer
+ for(uint16_t p0=0;p0<size;p0++)
+ {
+ pData[p0]=RxDummy[5+p0];//there are 5 dummy data in the Rx buffer
+ }
+//done
+ return flash_status;
+}
+

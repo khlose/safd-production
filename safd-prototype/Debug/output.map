@@ -3207,6 +3207,8 @@ Discarded input sections
                 0x00000000       0xd0 Src/flash.o
  .text.Master_WriteToFlash_Page
                 0x00000000       0xf0 Src/flash.o
+ .text.Master_ReadFromFlash
+                0x00000000       0x90 Src/flash.o
  .debug_macro   0x00000000      0x8bc Src/flash.o
  .debug_macro   0x00000000       0x82 Src/flash.o
  .debug_macro   0x00000000       0xb4 Src/flash.o
@@ -4955,7 +4957,7 @@ LOAD c:/users/schwi/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.1
                 0x0000043b       0x22 c:/users/schwi/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.15.0.201708311556/tools/compiler/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/fpv4-sp/hard/crtn.o
 OUTPUT(safd-prototype.elf elf32-littlearm)
 
-.debug_info     0x00000000    0x1afa5
+.debug_info     0x00000000    0x1b0e1
  .debug_info    0x00000000     0x1313 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_info    0x00001313     0x1703 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
  .debug_info    0x00002a16     0x1090 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
@@ -4967,12 +4969,12 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .debug_info    0x0000c84e     0x25db Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
  .debug_info    0x0000ee29     0x37cc Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
  .debug_info    0x000125f5     0x1d30 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
- .debug_info    0x00014325     0x1428 Src/flash.o
- .debug_info    0x0001574d     0x2365 Src/main.o
- .debug_info    0x00017ab2     0x1c50 Src/stm32l4xx_hal_msp.o
- .debug_info    0x00019702      0xa30 Src/stm32l4xx_it.o
- .debug_info    0x0001a132      0xde9 Src/system_stm32l4xx.o
- .debug_info    0x0001af1b       0x8a startup/startup_stm32l475xx.o
+ .debug_info    0x00014325     0x1564 Src/flash.o
+ .debug_info    0x00015889     0x2365 Src/main.o
+ .debug_info    0x00017bee     0x1c50 Src/stm32l4xx_hal_msp.o
+ .debug_info    0x0001983e      0xa30 Src/stm32l4xx_it.o
+ .debug_info    0x0001a26e      0xde9 Src/system_stm32l4xx.o
+ .debug_info    0x0001b057       0x8a startup/startup_stm32l475xx.o
 
 .debug_abbrev   0x00000000     0x2bec
  .debug_abbrev  0x00000000      0x2ec Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
@@ -4993,7 +4995,7 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .debug_abbrev  0x000029b4      0x226 Src/system_stm32l4xx.o
  .debug_abbrev  0x00002bda       0x12 startup/startup_stm32l475xx.o
 
-.debug_loc      0x00000000     0xdddd
+.debug_loc      0x00000000     0xdecb
  .debug_loc     0x00000000       0xf8 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_loc     0x000000f8      0x5ad Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
  .debug_loc     0x000006a5      0x33d Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
@@ -5005,11 +5007,11 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .debug_loc     0x00007069     0x1b2e Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
  .debug_loc     0x00008b97     0x36be Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
  .debug_loc     0x0000c255     0x164e Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
- .debug_loc     0x0000d8a3      0x255 Src/flash.o
- .debug_loc     0x0000daf8      0x101 Src/stm32l4xx_hal_msp.o
- .debug_loc     0x0000dbf9      0x1e4 Src/system_stm32l4xx.o
+ .debug_loc     0x0000d8a3      0x343 Src/flash.o
+ .debug_loc     0x0000dbe6      0x101 Src/stm32l4xx_hal_msp.o
+ .debug_loc     0x0000dce7      0x1e4 Src/system_stm32l4xx.o
 
-.debug_aranges  0x00000000      0xf60
+.debug_aranges  0x00000000      0xf68
  .debug_aranges
                 0x00000000      0x118 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_aranges
@@ -5033,19 +5035,19 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .debug_aranges
                 0x00000c88      0x150 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
  .debug_aranges
-                0x00000dd8       0x30 Src/flash.o
+                0x00000dd8       0x38 Src/flash.o
  .debug_aranges
-                0x00000e08       0x58 Src/main.o
+                0x00000e10       0x58 Src/main.o
  .debug_aranges
-                0x00000e60       0x50 Src/stm32l4xx_hal_msp.o
+                0x00000e68       0x50 Src/stm32l4xx_hal_msp.o
  .debug_aranges
-                0x00000eb0       0x60 Src/stm32l4xx_it.o
+                0x00000eb8       0x60 Src/stm32l4xx_it.o
  .debug_aranges
-                0x00000f10       0x28 Src/system_stm32l4xx.o
+                0x00000f18       0x28 Src/system_stm32l4xx.o
  .debug_aranges
-                0x00000f38       0x28 startup/startup_stm32l475xx.o
+                0x00000f40       0x28 startup/startup_stm32l475xx.o
 
-.debug_ranges   0x00000000      0xf38
+.debug_ranges   0x00000000      0xf58
  .debug_ranges  0x00000000      0x108 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_ranges  0x00000108       0xe8 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
  .debug_ranges  0x000001f0       0x48 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
@@ -5057,14 +5059,14 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .debug_ranges  0x00000750      0x1c8 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
  .debug_ranges  0x00000918      0x368 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
  .debug_ranges  0x00000c80      0x140 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
- .debug_ranges  0x00000dc0       0x68 Src/flash.o
- .debug_ranges  0x00000e28       0x48 Src/main.o
- .debug_ranges  0x00000e70       0x40 Src/stm32l4xx_hal_msp.o
- .debug_ranges  0x00000eb0       0x50 Src/stm32l4xx_it.o
- .debug_ranges  0x00000f00       0x18 Src/system_stm32l4xx.o
- .debug_ranges  0x00000f18       0x20 startup/startup_stm32l475xx.o
+ .debug_ranges  0x00000dc0       0x88 Src/flash.o
+ .debug_ranges  0x00000e48       0x48 Src/main.o
+ .debug_ranges  0x00000e90       0x40 Src/stm32l4xx_hal_msp.o
+ .debug_ranges  0x00000ed0       0x50 Src/stm32l4xx_it.o
+ .debug_ranges  0x00000f20       0x18 Src/system_stm32l4xx.o
+ .debug_ranges  0x00000f38       0x20 startup/startup_stm32l475xx.o
 
-.debug_macro    0x00000000    0x2754b
+.debug_macro    0x00000000    0x27557
  .debug_macro   0x00000000      0x37d Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_macro   0x0000037d      0x8bc Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_macro   0x00000c39       0x82 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
@@ -5135,14 +5137,14 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .debug_macro   0x00025ddd      0x32f Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
  .debug_macro   0x0002610c      0x341 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
  .debug_macro   0x0002644d      0x33e Src/flash.o
- .debug_macro   0x0002678b       0x70 Src/flash.o
- .debug_macro   0x000267fb      0x33c Src/main.o
- .debug_macro   0x00026b37       0x76 Src/main.o
- .debug_macro   0x00026bad      0x32f Src/stm32l4xx_hal_msp.o
- .debug_macro   0x00026edc      0x339 Src/stm32l4xx_it.o
- .debug_macro   0x00027215      0x336 Src/system_stm32l4xx.o
+ .debug_macro   0x0002678b       0x76 Src/flash.o
+ .debug_macro   0x00026801      0x33c Src/main.o
+ .debug_macro   0x00026b3d       0x7c Src/main.o
+ .debug_macro   0x00026bb9      0x32f Src/stm32l4xx_hal_msp.o
+ .debug_macro   0x00026ee8      0x339 Src/stm32l4xx_it.o
+ .debug_macro   0x00027221      0x336 Src/system_stm32l4xx.o
 
-.debug_line     0x00000000     0xd4f4
+.debug_line     0x00000000     0xd52c
  .debug_line    0x00000000      0xab4 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_line    0x00000ab4      0xa4d Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
  .debug_line    0x00001501      0x9ee Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
@@ -5154,14 +5156,14 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .debug_line    0x00006997     0x137e Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
  .debug_line    0x00007d15     0x1b37 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
  .debug_line    0x0000984c      0xef6 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
- .debug_line    0x0000a742      0x92b Src/flash.o
- .debug_line    0x0000b06d      0x954 Src/main.o
- .debug_line    0x0000b9c1      0x914 Src/stm32l4xx_hal_msp.o
- .debug_line    0x0000c2d5      0x8f6 Src/stm32l4xx_it.o
- .debug_line    0x0000cbcb      0x8aa Src/system_stm32l4xx.o
- .debug_line    0x0000d475       0x7f startup/startup_stm32l475xx.o
+ .debug_line    0x0000a742      0x963 Src/flash.o
+ .debug_line    0x0000b0a5      0x954 Src/main.o
+ .debug_line    0x0000b9f9      0x914 Src/stm32l4xx_hal_msp.o
+ .debug_line    0x0000c30d      0x8f6 Src/stm32l4xx_it.o
+ .debug_line    0x0000cc03      0x8aa Src/system_stm32l4xx.o
+ .debug_line    0x0000d4ad       0x7f startup/startup_stm32l475xx.o
 
-.debug_str      0x00000000    0xe9968
+.debug_str      0x00000000    0xe9988
  .debug_str     0x00000000    0xe4ee3 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
                               0xe5367 (size before relaxing)
  .debug_str     0x000e4ee3      0x377 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
@@ -5184,15 +5186,15 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
                               0xe5854 (size before relaxing)
  .debug_str     0x000e8e08      0x65b Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
                               0xe5286 (size before relaxing)
- .debug_str     0x000e9463      0x359 Src/flash.o
-                              0xe4e31 (size before relaxing)
- .debug_str     0x000e97bc       0x7f Src/main.o
-                              0xe5f2b (size before relaxing)
- .debug_str     0x000e983b       0x25 Src/stm32l4xx_hal_msp.o
+ .debug_str     0x000e9463      0x379 Src/flash.o
+                              0xe4e56 (size before relaxing)
+ .debug_str     0x000e97dc       0x7f Src/main.o
+                              0xe5f36 (size before relaxing)
+ .debug_str     0x000e985b       0x25 Src/stm32l4xx_hal_msp.o
                               0xe567e (size before relaxing)
- .debug_str     0x000e9860       0xb8 Src/stm32l4xx_it.o
+ .debug_str     0x000e9880       0xb8 Src/stm32l4xx_it.o
                               0xe470b (size before relaxing)
- .debug_str     0x000e9918       0x50 Src/system_stm32l4xx.o
+ .debug_str     0x000e9938       0x50 Src/system_stm32l4xx.o
                               0xe4847 (size before relaxing)
 
 .comment        0x00000000       0x7f
@@ -5214,7 +5216,7 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .comment       0x0000007f       0x80 Src/stm32l4xx_it.o
  .comment       0x0000007f       0x80 Src/system_stm32l4xx.o
 
-.debug_frame    0x00000000     0x298c
+.debug_frame    0x00000000     0x29b4
  .debug_frame   0x00000000      0x23c Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_frame   0x0000023c      0x13c Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
  .debug_frame   0x00000378       0xd0 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
@@ -5226,9 +5228,9 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .debug_frame   0x000012a8      0x5b8 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
  .debug_frame   0x00001860      0xa14 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
  .debug_frame   0x00002274      0x3f0 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
- .debug_frame   0x00002664       0x84 Src/flash.o
- .debug_frame   0x000026e8       0xe0 Src/main.o
- .debug_frame   0x000027c8       0xc0 Src/stm32l4xx_hal_msp.o
- .debug_frame   0x00002888       0xa8 Src/stm32l4xx_it.o
- .debug_frame   0x00002930       0x30 Src/system_stm32l4xx.o
- .debug_frame   0x00002960       0x2c c:/users/schwi/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.15.0.201708311556/tools/compiler/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-init.o)
+ .debug_frame   0x00002664       0xac Src/flash.o
+ .debug_frame   0x00002710       0xe0 Src/main.o
+ .debug_frame   0x000027f0       0xc0 Src/stm32l4xx_hal_msp.o
+ .debug_frame   0x000028b0       0xa8 Src/stm32l4xx_it.o
+ .debug_frame   0x00002958       0x30 Src/system_stm32l4xx.o
+ .debug_frame   0x00002988       0x2c c:/users/schwi/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.15.0.201708311556/tools/compiler/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-init.o)

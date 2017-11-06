@@ -29,6 +29,7 @@
 #define REMS 0x90 /*Read electronic manufacturer Signature*/
 #define RES 0xAB /*Read electronic signature*/
 #define RSFDP 0x5A /*Read serial flash discoverable parmaeters*/
+#define READ4 0x13 /*Read 4 byte address*/
 //WRITE command
 #define WRDI 0x04 /*Write disable*/
 #define WREN 0x06 /*Write enable*/
@@ -45,4 +46,6 @@ typedef enum
 FLASH_State verify_flash_memory(SPI_HandleTypeDef* hspi);
 FLASH_State master_EraseFlash(SPI_HandleTypeDef* hspi,uint32_t flash_addr, uint16_t sectors);
 FLASH_State Master_WriteToFlash_Page(SPI_HandleTypeDef* hspi,uint32_t flash_addr, uint8_t *pData, uint16_t pages);
+FLASH_State Master_ReadFromFlash(SPI_HandleTypeDef* hspi,uint32_t flash_addr, uint8_t *pData, uint16_t size);
+
 #endif /* FLASH_H_ */
