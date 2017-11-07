@@ -30,7 +30,9 @@ Src/system_stm32l4xx.o: ../Src/system_stm32l4xx.c \
  C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
  C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
  C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
- C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h
+ C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
+ C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
+ C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
 
 C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:
 
@@ -95,3 +97,7 @@ C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx
 C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h:
 
 C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
+
+C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
+
+C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:

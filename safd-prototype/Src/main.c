@@ -42,6 +42,8 @@
 
 /* USER CODE BEGIN Includes */
 #include "flash.h"
+#include <string.h>
+#include "ssd1306.h"
 
 //https://github.com/vadzimyatskevich/STM32F103_SSD1306 << OLED lib
 
@@ -56,6 +58,8 @@ SPI_HandleTypeDef hspi3;
 
 TIM_HandleTypeDef htim3;
 
+UART_HandleTypeDef huart4;
+
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
@@ -68,10 +72,11 @@ static void MX_TIM3_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_I2C3_Init(void);
+static void MX_UART4_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
+extern void SSD1306LibTest();
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -107,6 +112,7 @@ int main(void)
   MX_SPI1_Init();
   MX_SPI3_Init();
   MX_I2C3_Init();
+  MX_UART4_Init();
 
   /* USER CODE BEGIN 2 */
 
@@ -116,10 +122,31 @@ int main(void)
 
   //red basic info of flash chip, if info doesn't match original sheet,
   //throw an error flag
-  //This is now giving garbage value. WTF?
-  FLASH_State flash_status = verify_flash_memory(&hspi1);
-  //if(flash_status != FLASH_AVAILABLE)
-  //master_EraseFlash(&hspi1,0,1);
+
+  //FLASH_State flash_status = verify_flash_memory(&hspi1);
+
+  //This break the regulator?
+  //HAL_GPIO_WritePin(GPIOB,GPIO_PIN_15,GPIO_PIN_RESET);
+/*
+  char esp8266_reset[]    = "AT+RST\r\n";
+  //char esp8266_AT[]       = "AT\r\n";
+  uint16_t cmdlen = strlen(esp8266_reset);
+  HAL_StatusTypeDef Hal_status = HAL_UART_Transmit(&huart4, (uint8_t *)esp8266_reset, cmdlen, 10000);
+  if(Hal_status != HAL_OK)
+  {
+	  _Error_Handler(__FILE__, __LINE__);
+  }
+*/
+  /*
+  char ret[5];
+
+  Hal_status = HAL_UART_Receive(&huart4, (uint8_t *)ret, 4, 10000);
+  if(Hal_status != HAL_OK)
+  {
+	  _Error_Handler(__FILE__, __LINE__);
+  }
+  */
+
 
   /* USER CODE END 2 */
 
@@ -130,6 +157,7 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+
 
   }
   /* USER CODE END 3 */
@@ -171,7 +199,8 @@ void SystemClock_Config(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2C3;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_UART4|RCC_PERIPHCLK_I2C3;
+  PeriphClkInit.Uart4ClockSelection = RCC_UART4CLKSOURCE_PCLK1;
   PeriphClkInit.I2c3ClockSelection = RCC_I2C3CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
@@ -239,7 +268,7 @@ static void MX_SPI1_Init(void)
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.DataSize = SPI_DATASIZE_4BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
@@ -264,12 +293,12 @@ static void MX_SPI3_Init(void)
   /* SPI3 parameter configuration*/
   hspi3.Instance = SPI3;
   hspi3.Init.Mode = SPI_MODE_MASTER;
-  hspi3.Init.Direction = SPI_DIRECTION_1LINE;
-  hspi3.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi3.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi3.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -316,6 +345,27 @@ static void MX_TIM3_Init(void)
 
 }
 
+/* UART4 init function */
+static void MX_UART4_Init(void)
+{
+
+  huart4.Instance = UART4;
+  huart4.Init.BaudRate = 115200;
+  huart4.Init.WordLength = UART_WORDLENGTH_7B;
+  huart4.Init.StopBits = UART_STOPBITS_1;
+  huart4.Init.Parity = UART_PARITY_NONE;
+  huart4.Init.Mode = UART_MODE_TX_RX;
+  huart4.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart4.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart4.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_MultiProcessor_Init(&huart4, 0, UART_WAKEUPMETHOD_IDLELINE) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
+
 /** Configure pins as 
         * Analog 
         * Input 
@@ -334,10 +384,13 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_9, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
+                          |GPIO_PIN_6|GPIO_PIN_9, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PB12 PB13 PB14 PB9 */
-  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_9;
+  /*Configure GPIO pins : PB12 PB13 PB14 PB15 
+                           PB6 PB9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
+                          |GPIO_PIN_6|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -353,9 +406,16 @@ static void MX_GPIO_Init(void)
                            PA12 */
   GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11 
                           |GPIO_PIN_12;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 

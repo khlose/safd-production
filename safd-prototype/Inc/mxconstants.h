@@ -42,10 +42,10 @@
 #define S2_GPIO_Port GPIOC
 #define S3_Pin GPIO_PIN_1
 #define S3_GPIO_Port GPIOC
-#define CS_Pin GPIO_PIN_12
+#define CS_Pin GPIO_PIN_6
 #define CS_GPIO_Port GPIOB
-#define DC_Pin GPIO_PIN_14
-#define DC_GPIO_Port GPIOB
+#define DC_Pin GPIO_PIN_2
+#define DC_GPIO_Port GPIOD
 #define LED2_Pin GPIO_PIN_8
 #define LED2_GPIO_Port GPIOB
 #define LED1_Pin GPIO_PIN_9
