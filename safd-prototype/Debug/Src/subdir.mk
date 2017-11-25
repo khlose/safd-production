@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/esp8266.c \
 ../Src/flash.c \
 ../Src/font5x7.c \
 ../Src/main.c \
@@ -14,6 +15,7 @@ C_SRCS += \
 ../Src/system_stm32l4xx.c 
 
 OBJS += \
+./Src/esp8266.o \
 ./Src/flash.o \
 ./Src/font5x7.o \
 ./Src/main.o \
@@ -24,6 +26,7 @@ OBJS += \
 ./Src/system_stm32l4xx.o 
 
 C_DEPS += \
+./Src/esp8266.d \
 ./Src/flash.d \
 ./Src/font5x7.d \
 ./Src/main.d \

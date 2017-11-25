@@ -44,6 +44,7 @@
 #include "flash.h"
 #include <string.h>
 #include "ssd1306.h"
+#include "esp8266.h"
 
 //https://github.com/vadzimyatskevich/STM32F103_SSD1306 << OLED lib
 
@@ -62,7 +63,7 @@ UART_HandleTypeDef huart4;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+uint8_t rx_buffer[10];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -115,37 +116,137 @@ int main(void)
   MX_UART4_Init();
 
   /* USER CODE BEGIN 2 */
+  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_15,GPIO_PIN_RESET);
 
   HAL_GPIO_WritePin(LED_D3_PORT,LED_D3_PIN,GPIO_PIN_SET);
   HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
-  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
 
-  //red basic info of flash chip, if info doesn't match original sheet,
-  //throw an error flag
 
-  //FLASH_State flash_status = verify_flash_memory(&hspi1);
+  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);
+  HAL_Delay(100);
+  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
 
-  //This break the regulator?
-  //HAL_GPIO_WritePin(GPIOB,GPIO_PIN_15,GPIO_PIN_RESET);
-/*
-  char esp8266_reset[]    = "AT+RST\r\n";
-  //char esp8266_AT[]       = "AT\r\n";
-  uint16_t cmdlen = strlen(esp8266_reset);
-  HAL_StatusTypeDef Hal_status = HAL_UART_Transmit(&huart4, (uint8_t *)esp8266_reset, cmdlen, 10000);
+  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_2,GPIO_PIN_RESET);
+
+  uint8_t pData;
+  pData =0xAE;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }
+  pData =0x00;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x10;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x40;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x81;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xCF;//8F for external
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xA1;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xA6;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xA8;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x3F;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xD3;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x00;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xD5;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x80;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xD9;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xF1;//22 for external
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xDA;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x12;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xDB;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x40;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x8D;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0x14; //10 for external
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }  pData =0xAF;
+  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }
+  ssd1306Refresh();
+
+  HAL_Delay(100);
+  //WIFI_CHIP_ENABLE();
+  //HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_RESET);
+  //GPIOB->BRR = 0x0080;
+  //char esp8266_reset[]    = "AT+RST\r\n";
+  uint8_t esp8266_AT[]       = "AT\r\n";
+  HAL_StatusTypeDef Hal_status = HAL_UART_Transmit(&huart4,esp8266_AT, 4, 1000);
   if(Hal_status != HAL_OK)
   {
 	  _Error_Handler(__FILE__, __LINE__);
   }
-*/
-  /*
-  char ret[5];
-
-  Hal_status = HAL_UART_Receive(&huart4, (uint8_t *)ret, 4, 10000);
-  if(Hal_status != HAL_OK)
+  HAL_Delay(1000);
+uint8_t receive[10] = {0};
+  HAL_StatusTypeDef Hal_status_rec = HAL_UART_Receive_IT(&huart4,receive, 4);
+  if(Hal_status_rec != HAL_OK)
   {
 	  _Error_Handler(__FILE__, __LINE__);
   }
-  */
+
+
+  //WIFI_CHIP_DISABLE();
 
 
   /* USER CODE END 2 */
@@ -157,7 +258,7 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-
+	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
 
   }
   /* USER CODE END 3 */
@@ -298,7 +399,7 @@ static void MX_SPI3_Init(void)
   hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
   hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -351,7 +452,7 @@ static void MX_UART4_Init(void)
 
   huart4.Instance = UART4;
   huart4.Init.BaudRate = 115200;
-  huart4.Init.WordLength = UART_WORDLENGTH_7B;
+  huart4.Init.WordLength = UART_WORDLENGTH_8B;
   huart4.Init.StopBits = UART_STOPBITS_1;
   huart4.Init.Parity = UART_PARITY_NONE;
   huart4.Init.Mode = UART_MODE_TX_RX;
@@ -359,7 +460,7 @@ static void MX_UART4_Init(void)
   huart4.Init.OverSampling = UART_OVERSAMPLING_16;
   huart4.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
   huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_MultiProcessor_Init(&huart4, 0, UART_WAKEUPMETHOD_IDLELINE) != HAL_OK)
+  if (HAL_UART_Init(&huart4) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
@@ -385,37 +486,19 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
-                          |GPIO_PIN_6|GPIO_PIN_9, GPIO_PIN_RESET);
+                          |GPIO_PIN_5|GPIO_PIN_9, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
 
   /*Configure GPIO pins : PB12 PB13 PB14 PB15 
-                           PB6 PB9 */
+                           PB5 PB7 PB9 */
   GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
-                          |GPIO_PIN_6|GPIO_PIN_9;
+                          |GPIO_PIN_5|GPIO_PIN_7|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PC9 */
-  GPIO_InitStruct.Pin = GPIO_PIN_9;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : PA8 PA9 PA10 PA11 
-                           PA12 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11 
-                          |GPIO_PIN_12;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 

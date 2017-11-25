@@ -35,7 +35,8 @@ Src/main.o: ../Src/main.c \
  C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
  C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Inc/flash.h \
- C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h
+ C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h \
+ C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Inc/esp8266.h
 
 C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Inc/main.h:
 
@@ -110,3 +111,5 @@ C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx
 C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Inc/flash.h:
 
 C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h:
+
+C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Inc/esp8266.h:
