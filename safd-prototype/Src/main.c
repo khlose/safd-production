@@ -41,10 +41,9 @@
 #include "stm32l4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-#include "flash.h"
+
 #include <string.h>
-#include "ssd1306.h"
-#include "esp8266.h"
+
 
 //https://github.com/vadzimyatskevich/STM32F103_SSD1306 << OLED lib
 
@@ -116,137 +115,6 @@ int main(void)
   MX_UART4_Init();
 
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_15,GPIO_PIN_RESET);
-
-  HAL_GPIO_WritePin(LED_D3_PORT,LED_D3_PIN,GPIO_PIN_SET);
-  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
-
-
-  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
-
-  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_2,GPIO_PIN_RESET);
-
-  uint8_t pData;
-  pData =0xAE;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }
-  pData =0x00;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x10;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x40;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x81;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xCF;//8F for external
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xA1;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xA6;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xA8;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x3F;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xD3;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x00;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xD5;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x80;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xD9;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xF1;//22 for external
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xDA;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x12;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xDB;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x40;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x8D;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0x14; //10 for external
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }  pData =0xAF;
-  if(HAL_SPI_Transmit(&hspi3, &pData, 1, 100)!=HAL_OK)
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }
-  ssd1306Refresh();
-
-  HAL_Delay(100);
-  //WIFI_CHIP_ENABLE();
-  //HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_RESET);
-  //GPIOB->BRR = 0x0080;
-  //char esp8266_reset[]    = "AT+RST\r\n";
-  uint8_t esp8266_AT[]       = "AT\r\n";
-  HAL_StatusTypeDef Hal_status = HAL_UART_Transmit(&huart4,esp8266_AT, 4, 1000);
-  if(Hal_status != HAL_OK)
-  {
-	  _Error_Handler(__FILE__, __LINE__);
-  }
-  HAL_Delay(1000);
-uint8_t receive[10] = {0};
-  HAL_StatusTypeDef Hal_status_rec = HAL_UART_Receive_IT(&huart4,receive, 4);
-  if(Hal_status_rec != HAL_OK)
-  {
-	  _Error_Handler(__FILE__, __LINE__);
-  }
-
-
-  //WIFI_CHIP_DISABLE();
 
 
   /* USER CODE END 2 */
