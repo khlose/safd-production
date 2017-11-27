@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Src/buffer.c \
+../Src/ds2782.c \
 ../Src/fall_detection.c \
 ../Src/lsm6ds3.c \
 ../Src/main.c \
@@ -16,6 +17,7 @@ C_SRCS += \
 
 OBJS += \
 ./Src/buffer.o \
+./Src/ds2782.o \
 ./Src/fall_detection.o \
 ./Src/lsm6ds3.o \
 ./Src/main.o \
@@ -27,6 +29,7 @@ OBJS += \
 
 C_DEPS += \
 ./Src/buffer.d \
+./Src/ds2782.d \
 ./Src/fall_detection.d \
 ./Src/lsm6ds3.d \
 ./Src/main.d \
