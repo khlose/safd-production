@@ -41,7 +41,9 @@
 #include "stm32l4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "ssd1306.h"
+#include "ds2782.h"
+#include "font7x10.h"
 #include <string.h>
 
 
@@ -51,10 +53,12 @@
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c2;
 I2C_HandleTypeDef hi2c3;
 
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi3;
+DMA_HandleTypeDef hdma_spi3_rx;
 
 TIM_HandleTypeDef htim3;
 
@@ -68,15 +72,17 @@ uint8_t rx_buffer[10];
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_I2C3_Init(void);
 static void MX_UART4_Init(void);
+static void MX_I2C2_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-extern void SSD1306LibTest();
+
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -108,13 +114,39 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_TIM3_Init();
   MX_SPI1_Init();
   MX_SPI3_Init();
   MX_I2C3_Init();
   MX_UART4_Init();
+  MX_I2C2_Init();
 
   /* USER CODE BEGIN 2 */
+  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
+  uint8_t val = 0;
+
+  DS2782Status return_status;
+  //return_status = readStatusReg(&hi2c2,&val);
+  //return_status = ds2782_init(&hi2c2);
+
+  HAL_StatusTypeDef status;
+
+  uint8_t slave_Addr = 0;
+
+  for(uint8_t addr=0;addr<=0xFF;addr++)
+  {
+	  if(addr != 0xd4 && addr != 0xd5)
+	  {
+		  status = HAL_I2C_Mem_Read(&hi2c2,addr,0x7E,I2C_MEMADD_SIZE_8BIT,&slave_Addr,1,100);
+		  if(status == HAL_OK)
+		  {
+			  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+		  }
+	  }
+  }
+
 
 
   /* USER CODE END 2 */
@@ -126,7 +158,7 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_RESET);
 
   }
   /* USER CODE END 3 */
@@ -168,8 +200,10 @@ void SystemClock_Config(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_UART4|RCC_PERIPHCLK_I2C3;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_UART4|RCC_PERIPHCLK_I2C2
+                              |RCC_PERIPHCLK_I2C3;
   PeriphClkInit.Uart4ClockSelection = RCC_UART4CLKSOURCE_PCLK1;
+  PeriphClkInit.I2c2ClockSelection = RCC_I2C2CLKSOURCE_PCLK1;
   PeriphClkInit.I2c3ClockSelection = RCC_I2C3CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
@@ -193,6 +227,40 @@ void SystemClock_Config(void)
 
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+}
+
+/* I2C2 init function */
+static void MX_I2C2_Init(void)
+{
+
+  hi2c2.Instance = I2C2;
+  hi2c2.Init.Timing = 0x00000E14;
+  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c2.Init.OwnAddress2 = 0;
+  hi2c2.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    /**Configure Analogue filter 
+    */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c2, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    /**Configure Digital filter 
+    */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 0) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
 }
 
 /* I2C3 init function */
@@ -267,7 +335,7 @@ static void MX_SPI3_Init(void)
   hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -332,6 +400,21 @@ static void MX_UART4_Init(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
+
+}
+
+/** 
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void) 
+{
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA2_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Channel1_IRQn);
 
 }
 

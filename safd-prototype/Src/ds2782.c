@@ -20,23 +20,31 @@ DS2782Status ds2782_init(I2C_HandleTypeDef *hi2c)
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, FULL_40_MSB, I2C_MEMADD_SIZE_8BIT, buf,2,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
 
+	//charge voltage threshold used to detect a fully charged state
+	//has a unit of 19.52mV (0x01 = 19.52mV 0x02 = 39.04mV etc.)
 	buf[0]= 0xD5;
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, VCHG, I2C_MEMADD_SIZE_8BIT, buf,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
 
+	//stores the charge current threshold used to detect a fully charged state
+	//has a unit of 50 uV assuming RSNS = 20mOhm
 	buf[0]=0x14;
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, IMIN, I2C_MEMADD_SIZE_8BIT, buf,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
 
-
+	//Stores the voltage threshold used to detect the active empty point
+	//has a unit of 19.52mV
 	buf[0]=0xB3;
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, VAE, I2C_MEMADD_SIZE_8BIT, buf,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
 
+	//stores the discharge current threshold used to detect the Active Empty point
+	//has a unit of 200uV assuming RSNS = 20mOhm
 	buf[0]=0x0a;
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, IAE, I2C_MEMADD_SIZE_8BIT, buf,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
 
+	//what exactly is Active empty 40?
 	buf[0]=0x06;
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, ACTIVE_EMPTY_40, I2C_MEMADD_SIZE_8BIT, buf,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
@@ -44,14 +52,18 @@ DS2782Status ds2782_init(I2C_HandleTypeDef *hi2c)
 	//fillBuf(full40Reg, buf);
 	//setEepromBlockRegister(RSGAIN_MSB,buf,2);
 
+	//sensinbg resistor temperature coefficient, we have none
 	buf[0]=0;
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, RSTC, I2C_MEMADD_SIZE_8BIT, buf,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
 
+	//stores the value of the sense resistor for use in computing the absolute capacity result
+	//has a units of mhos
 	buf[0]=0x32;
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, RSNSP, I2C_MEMADD_SIZE_8BIT, buf,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
 
+	//accumulation bias register set to 00h
 	buf[0]=0;
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, AB, I2C_MEMADD_SIZE_8BIT, buf,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
@@ -115,9 +127,6 @@ DS2782Status readVoltage(I2C_HandleTypeDef *hi2c, float *voltage){
 
    uint8_t rawData[2];
    uint16_t rawVolt=0;
-   if(!read(VOLT_MSB_REG, rawData,2)) return DS2782_ERROR;
-
-
    HAL_StatusTypeDef status;
    status = HAL_I2C_Mem_Read(hi2c,DS2782_ADDRESS,VOLT_MSB_REG,I2C_MEMADD_SIZE_8BIT,rawData,2,100);
    if(status != HAL_OK) return DS2782_ERROR;
@@ -151,9 +160,10 @@ DS2782Status readCurrent(I2C_HandleTypeDef *hi2c, float *current){
 
 DS2782Status readUniqueID(I2C_HandleTypeDef *hi2c, uint8_t *id){
 	uint8_t uniqueid[8];
+	uint8_t first_byte;
 
 	HAL_StatusTypeDef status;
-	status = HAL_I2C_Mem_Read(hi2c,DS2782_ADDRESS,UNIQUE_ID_REG,I2C_MEMADD_SIZE_8BIT,uniqueid,8,100);
+	status = HAL_I2C_Mem_Read(hi2c,DS2782_ADDRESS,UNIQUE_ID_REG,I2C_MEMADD_SIZE_8BIT,&first_byte,1,100);
 
 	if(status != HAL_OK) return DS2782_ERROR;
 	return DS2782_OK;

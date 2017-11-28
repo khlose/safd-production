@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Inc
+HeaderPath=C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc
 HeaderFiles=gpio.h;i2c.h;spi.h;tim.h;stm32l4xx_it.h;stm32l4xx_hal_conf.h;main.h;
-SourcePath=C:/Users/schwi/Documents/GitHub/safd-production/safd-prototype/Src
+SourcePath=C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Src
 SourceFiles=gpio.c;i2c.c;spi.c;tim.c;stm32l4xx_it.c;stm32l4xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]
@@ -11,4 +11,7 @@ LibFiles=Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c.h;Drivers/STM32L4xx_
 SourceFiles=..\Src\main.c;..\Src\stm32l4xx_it.c;..\Src\stm32l4xx_hal_msp.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi_ex.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c;../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c;../Src/system_stm32l4xx.c;../Drivers/CMSIS/Device/ST/STM32L4xx/Source/Templates/system_stm32l4xx.c;../Drivers/CMSIS/Device/ST/STM32L4xx/Source/Templates/gcc/startup_stm32l475xx.s;
 HeaderPath=..\Drivers\STM32L4xx_HAL_Driver\Inc;..\Drivers\STM32L4xx_HAL_Driver\Inc\Legacy;..\Drivers\CMSIS\Device\ST\STM32L4xx\Include;..\Drivers\CMSIS\Include;..\Inc;
 CDefines=__weak:__attribute__((weak));__packed:__attribute__((__packed__));
+
+[]
+SourceFiles=;null;
 
