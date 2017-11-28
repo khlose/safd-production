@@ -125,8 +125,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_RESET);
   HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_D3_PORT,LED_D3_PIN,GPIO_PIN_RESET);
   uint8_t val = 0;
-
+/*
   DS2782Status return_status;
   //return_status = readStatusReg(&hi2c2,&val);
   //return_status = ds2782_init(&hi2c2);
@@ -137,17 +138,17 @@ int main(void)
 
   for(uint8_t addr=0;addr<=0xFF;addr++)
   {
-	  if(addr != 0xd4 && addr != 0xd5)
-	  {
-		  status = HAL_I2C_Mem_Read(&hi2c2,addr,0x7E,I2C_MEMADD_SIZE_8BIT,&slave_Addr,1,100);
+	  //if(addr != 0xd4 && addr != 0xd5)
+	  //{
+		  status = HAL_I2C_Mem_Read(&hi2c2,addr,0x01,I2C_MEMADD_SIZE_8BIT,&slave_Addr,1,100);
 		  if(status == HAL_OK)
 		  {
 			  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
 		  }
-	  }
+	  //}
   }
-
-
+*/
+  int ready_flag1,ready_flag2;
 
   /* USER CODE END 2 */
 
@@ -158,7 +159,20 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_RESET);
+
+	  GPIO_PinState status1 = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12);
+	  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_12,GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_RESET);
+
+	  if(status1 == GPIO_PIN_RESET){
+		  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_12,GPIO_PIN_SET);
+		  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == GPIO_PIN_RESET){
+			  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_SET);
+			  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15,GPIO_PIN_SET);
+			  HAL_Delay(2000);
+			  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15,GPIO_PIN_RESET);
+		  }
+	  }
 
   }
   /* USER CODE END 3 */
@@ -440,6 +454,9 @@ static void MX_GPIO_Init(void)
                           |GPIO_PIN_5|GPIO_PIN_9, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
 
   /*Configure GPIO pins : PB12 PB13 PB14 PB15 
@@ -450,6 +467,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PA11 PA12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 }
 
