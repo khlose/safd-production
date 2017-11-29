@@ -137,37 +137,21 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
   HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
-  HAL_TIM_Base_Start(&htim4);
-//  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
 
-  //HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);
+  SSD1306_Init();
+    SSD1306_Flush();
 
+    SSD1306_Orientation(LCD_ORIENT_NORMAL);
 
-   triplet gyro_reading1;
-   triplet gyro_reading2;
+    SSD1306_Contrast(127);
 
+    SSD1306_Fill(0x00);
 
-   volatile int detection_result_waist=0;
-   volatile int detection_result_sternum=0;
-
-   /*Accelerometer initialization routine*/
-
-   LSM6DS3_StatusTypedef gyro1_init_status,gyro2_init_status;
-   gyro1_init_status = init_gyroscope(&hi2c3,SENSOR_1,dps_250,rate416hz);
-   gyro2_init_status = init_gyroscope(&hi2c3,SENSOR_2,dps_250,rate416hz);
-
-   if(gyro1_init_status != LSM6DS3_OK)
-   {
- 	  _Error_Handler(__FILE__, __LINE__);
-   }
-
-   if(gyro2_init_status != LSM6DS3_OK)
-   {
- 	  _Error_Handler(__FILE__, __LINE__);
-   }
-
-   /*Start timer interrupt*/
-   HAL_TIM_Base_Start_IT(&htim3);
+    LCD_PutStr(0,23,"SAF-D",fnt7x10);
+    LCD_PutStr(19,scr_height - 15,"TEAM13",fnt7x10);
+    LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
+    //for (int i = 0; i < scr_width - 1; i += 16)	LCD_DrawBitmap(i,23,16,17,Go_SAF_D);
+    SSD1306_Flush();
 
   /* USER CODE END 2 */
 
@@ -176,39 +160,10 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-
+	  //HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
   /* USER CODE BEGIN 3 */
-	  if(peek(&angular_velocity_buffer_sternum) == BUFFER_AVAILABLE && peek(&angular_velocity_buffer_waist) == BUFFER_AVAILABLE)
-	  	  {
-	  		  fetch(&angular_velocity_buffer_sternum, &gyro_reading1);
-	  		  fetch(&angular_velocity_buffer_waist, &gyro_reading2);
 
-	  		  //TODO: detection result is now determined according to the resultant angular velocity,
-	  		  //which makes our system super sensitive. Should we switch from using the resultant velocity
-	  		  //to just one axis of an angular velocity measured by the sensor?
-	  		  detection_result_sternum = detection_angular_velocity_sternum(gyro_reading1);
-	  		  //Also moving into a function is expensive, we might want to merge these functions into one at some point to optimize
-	  		  //our timing
-	  		  detection_result_waist = detection_angular_velocity_waist(gyro_reading2);
-
-	  		  if(detection_result_sternum == EXCEED)
-	  		  {
-	  			  HAL_GPIO_WritePin(LED_D3_PORT, LED_D3_PIN, GPIO_PIN_SET);
-	  		  }
-	  		  if(detection_result_waist == EXCEED)
-	  		  {
-	  			  HAL_GPIO_WritePin(LED_D4_PORT, LED_D4_PIN, GPIO_PIN_SET);
-	  		  }
-	  		  if(detection_result_waist == EXCEED && detection_result_sternum == EXCEED)
-	  		  {
-	  			  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
-	  		  }
-
-	  	  }
-	  	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == GPIO_PIN_RESET){
-	  		HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);
-	  	  }
-
+	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
   }
   /* USER CODE END 3 */
 
@@ -521,18 +476,22 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
-                          |GPIO_PIN_5|GPIO_PIN_9, GPIO_PIN_RESET);
+                          |OLED_RST_Pin|OLED_CS_Pin|GPIO_PIN_9, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(OLED_DC_GPIO_Port, OLED_DC_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pins : PB12 PB13 PB14 PB15 
-                           PB5 PB9 */
+                           OLED_RST_Pin OLED_CS_Pin PB9 */
   GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
-                          |GPIO_PIN_5|GPIO_PIN_9;
+                          |OLED_RST_Pin|OLED_CS_Pin|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -550,6 +509,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : OLED_DC_Pin */
+  GPIO_InitStruct.Pin = OLED_DC_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(OLED_DC_GPIO_Port, &GPIO_InitStruct);
 
 }
 

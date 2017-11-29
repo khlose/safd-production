@@ -47,6 +47,13 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define OLED_DC_Pin GPIO_PIN_2
+#define OLED_DC_GPIO_Port GPIOD
+#define OLED_RST_Pin GPIO_PIN_5
+#define OLED_RST_GPIO_Port GPIOB
+#define OLED_CS_Pin GPIO_PIN_6
+#define OLED_CS_GPIO_Port GPIOB
+
 /* ########################## Assert Selection ############################## */
 /**
   * @brief Uncomment the line below to expanse the "assert_param" macro in the 

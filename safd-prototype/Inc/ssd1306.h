@@ -2,6 +2,16 @@
 #define __SSD1306_H
 
 #include "stm32l4xx_hal.h"
+#include "main.h"
+
+// SSD1306 display connection:
+//   PB8 --> CS
+//   PB9 --> RES
+//   PC0 --> DC
+//   PA5 --> D0 (SCK)
+//   PA7 --> D1 (MOSI)
+
+
 // Use bit-banding to draw pixel
 //   0 - use logic operations to set pixel color
 //   1 - use bit-banding to set pixel color
@@ -17,11 +27,6 @@
 //   1 - compile functions for DMA transfer VRAM to display
 #define SSD1306_USE_DMA       0
 
-
-// SSD1306 HAL
-
-// SPI port
-#define SSD1306_SPI_PORT      hSPI1
 
 // GPIO peripherals
 #define SSD1306_GPIO_PERIPH   (RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOCEN)
