@@ -127,13 +127,18 @@ int main(void)
   HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
   uint8_t val = 0;
 
-  DS2782Status return_status = ds2782_init(&hi2c2);
+  //DS2782Status return_status = ds2782_init(&hi2c2);
 
   //return_status = readStatusReg(&hi2c2,&val);
   //return_status = ds2782_init(&hi2c2);
 
   HAL_StatusTypeDef status;
   uint8_t slave_Addr = 0;
+  status = HAL_I2C_Mem_Read(&hi2c2,0x34<<1,0x7E,I2C_MEMADD_SIZE_8BIT,&slave_Addr,1,1000);
+  if(status == HAL_OK)
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }
 
 /*
 
