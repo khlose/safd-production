@@ -74,56 +74,44 @@ void calculate_angular_acceleration(triplet v_f,triplet v_i, float DTime,triplet
 	return;
 }
 
-int detection_angular_velocity(triplet angular_v, triplet angular_v_i, triplet angle,float DTime)
+int detection_angular_velocity_sternum(triplet angular_v_sternum)
 {
 	/*Calculate resultant angular velocity*/
 	/*z = roll angular velocity*/
 	/*x = pitch angular velocity*/
-	float resultant_angular_v = sqrt(pow(angular_v.z,2) + pow(angular_v.x,2));
+	float resultant_angular_v = sqrt(pow(angular_v_sternum.z,2) + pow(angular_v_sternum.x,2));
 
-	float resultant_angle = sqrt(pow(angle.z,2) + pow(angle.x,2));
-
-	triplet angular_acc;
-	calculate_angular_acceleration(angular_v,angular_v_i,SAMPLIING_PERIOD,&angular_acc);
-
-	float resultant_angular_a = sqrt(pow(angular_acc.z,2) + pow(angular_acc.x,2));
-
-
-	if(resultant_angular_v > FT1_S)
+	//might have to be angular_v_sternum.x and not resultant angular velocity according to
+	//dope_fall_detection.pdf in research article folder
+	if(fabs(resultant_angular_v) > FT1_S)
 	{
 		/*measure FT2 and FT3*/
-		  //need to hold on to the line for 10ms
 
-		if(resultant_angle > FT3 && resultant_angular_a > FT2)
-		{
-			return SUPER_EXCEED;
-		}
 		return EXCEED;
-		//add angular acceleration
 	}
 
 	return BELOW;
 }
 
-int detection_waist_sternum_ang_v(triplet angular_velocity_sternum,triplet angular_velocity_waist)
+int detection_angular_velocity_waist(triplet angular_v_waist)
 {
-	float resultant_ang_v_sternum = sqrt(pow(angular_velocity_sternum.z,2) + pow(angular_velocity_sternum.x,2));
-	float resultant_ang_v_waist = sqrt(pow(angular_velocity_waist.z,2) + pow(angular_velocity_waist.x,2));
+	/*Calculate resultant angular velocity*/
+	/*z = roll angular velocity*/
+	/*x = pitch angular velocity*/
+	float resultant_angular_v = sqrt(pow(angular_v_waist.z,2) + pow(angular_v_waist.x,2));
 
-	if(resultant_ang_v_sternum > FT1_S)
+	//might have to be angular_v_sternum.x and not resultant angular velocity according to
+	//dope_fall_detection.pdf in research article folder
+	//if(resultant_angular_v > FT1_W)
+	if(fabs(resultant_angular_v) > FT1_W)
 	{
-			/*measure FT2 and FT3*/
-			  //need to hold on to the line for 10ms
-		if(resultant_ang_v_waist > FT1_W)
-		{
-			return SUPER_EXCEED;
-		}
+		/*measure FT2 and FT3*/
+
 		return EXCEED;
-		//add angular acceleration
 	}
+
 	return BELOW;
 }
-
 
 
 int single_fall_detection(float magA, float angle){

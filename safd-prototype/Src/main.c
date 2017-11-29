@@ -46,9 +46,11 @@
 #include "font7x10.h"
 #include <string.h>
 
-
+#include "lsm6ds3.h"
+#include "buffer.h"
+#include "fall_detection.h"
+#include "util.h"
 //https://github.com/vadzimyatskevich/STM32F103_SSD1306 << OLED lib
-
 
 /* USER CODE END Includes */
 
@@ -61,12 +63,17 @@ SPI_HandleTypeDef hspi3;
 DMA_HandleTypeDef hdma_spi3_rx;
 
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
 
 UART_HandleTypeDef huart4;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 uint8_t rx_buffer[10];
+
+triple_ring_buffer linear_acceleration_buffer; //
+triple_ring_buffer angular_velocity_buffer_sternum;  //
+triple_ring_buffer angular_velocity_buffer_waist;  //
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,6 +86,10 @@ static void MX_SPI3_Init(void);
 static void MX_I2C3_Init(void);
 static void MX_UART4_Init(void);
 static void MX_I2C2_Init(void);
+static void MX_TIM4_Init(void);
+
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+                                
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -121,35 +132,42 @@ int main(void)
   MX_I2C3_Init();
   MX_UART4_Init();
   MX_I2C2_Init();
+  MX_TIM4_Init();
 
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
   HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
-  uint8_t val = 0;
+  HAL_TIM_Base_Start(&htim4);
+//  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
 
-  DS2782Status return_status = ds2782_init(&hi2c2);
+  //HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);
 
-  //return_status = readStatusReg(&hi2c2,&val);
-  //return_status = ds2782_init(&hi2c2);
 
-  HAL_StatusTypeDef status;
-  uint8_t slave_Addr = 0;
+   triplet gyro_reading1;
+   triplet gyro_reading2;
 
-/*
 
-  for(uint8_t addr=0;addr<=0xFF;addr++)
-  {
-	  if(addr != 0xd4 && addr != 0xd5)
-	  {
-		  status = HAL_I2C_Mem_Read(&hi2c2,addr,0x7E,I2C_MEMADD_SIZE_8BIT,&slave_Addr,1,1000);
-		  if(status == HAL_OK)
-		  {
-			  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-		  }
-	  }
-  }
+   volatile int detection_result_waist=0;
+   volatile int detection_result_sternum=0;
 
-*/
+   /*Accelerometer initialization routine*/
+
+   LSM6DS3_StatusTypedef gyro1_init_status,gyro2_init_status;
+   gyro1_init_status = init_gyroscope(&hi2c3,SENSOR_1,dps_250,rate416hz);
+   gyro2_init_status = init_gyroscope(&hi2c3,SENSOR_2,dps_250,rate416hz);
+
+   if(gyro1_init_status != LSM6DS3_OK)
+   {
+ 	  _Error_Handler(__FILE__, __LINE__);
+   }
+
+   if(gyro2_init_status != LSM6DS3_OK)
+   {
+ 	  _Error_Handler(__FILE__, __LINE__);
+   }
+
+   /*Start timer interrupt*/
+   HAL_TIM_Base_Start_IT(&htim3);
 
   /* USER CODE END 2 */
 
@@ -160,7 +178,36 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_RESET);
+	  if(peek(&angular_velocity_buffer_sternum) == BUFFER_AVAILABLE && peek(&angular_velocity_buffer_waist) == BUFFER_AVAILABLE)
+	  	  {
+	  		  fetch(&angular_velocity_buffer_sternum, &gyro_reading1);
+	  		  fetch(&angular_velocity_buffer_waist, &gyro_reading2);
+
+	  		  //TODO: detection result is now determined according to the resultant angular velocity,
+	  		  //which makes our system super sensitive. Should we switch from using the resultant velocity
+	  		  //to just one axis of an angular velocity measured by the sensor?
+	  		  detection_result_sternum = detection_angular_velocity_sternum(gyro_reading1);
+	  		  //Also moving into a function is expensive, we might want to merge these functions into one at some point to optimize
+	  		  //our timing
+	  		  detection_result_waist = detection_angular_velocity_waist(gyro_reading2);
+
+	  		  if(detection_result_sternum == EXCEED)
+	  		  {
+	  			  HAL_GPIO_WritePin(LED_D3_PORT, LED_D3_PIN, GPIO_PIN_SET);
+	  		  }
+	  		  if(detection_result_waist == EXCEED)
+	  		  {
+	  			  HAL_GPIO_WritePin(LED_D4_PORT, LED_D4_PIN, GPIO_PIN_SET);
+	  		  }
+	  		  if(detection_result_waist == EXCEED && detection_result_sternum == EXCEED)
+	  		  {
+	  			  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+	  		  }
+
+	  	  }
+	  	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == GPIO_PIN_RESET){
+	  		HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);
+	  	  }
 
   }
   /* USER CODE END 3 */
@@ -384,6 +431,44 @@ static void MX_TIM3_Init(void)
 
 }
 
+/* TIM4 init function */
+static void MX_TIM4_Init(void)
+{
+
+  TIM_MasterConfigTypeDef sMasterConfig;
+  TIM_OC_InitTypeDef sConfigOC;
+
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 24;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 200;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 23;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  HAL_TIM_MspPostInit(&htim4);
+
+}
+
 /* UART4 init function */
 static void MX_UART4_Init(void)
 {
@@ -442,16 +527,29 @@ static void MX_GPIO_Init(void)
                           |GPIO_PIN_5|GPIO_PIN_9, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PB12 PB13 PB14 PB15 
-                           PB5 PB7 PB9 */
+                           PB5 PB9 */
   GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
-                          |GPIO_PIN_5|GPIO_PIN_7|GPIO_PIN_9;
+                          |GPIO_PIN_5|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PA10 PA11 PA12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 }
 

@@ -36,7 +36,13 @@ Src/main.o: ../Src/main.c \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ds2782.h \
- C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/lsm6ds3.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/fall_detection.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/lsm6ds3.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/util.h
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/main.h:
 
@@ -113,3 +119,15 @@ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ds2782.h:
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/lsm6ds3.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/fall_detection.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/lsm6ds3.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/util.h:

@@ -76,6 +76,10 @@
 #define UI_SW5_PIN GPIO_PIN_11
 #define UI_SW6_PORT GPIOA
 #define UI_SW6_PIN GPIO_PIN_12
+
+#define BUZZER_PORT GPIOB
+#define BUZZER_PIN GPIO_PIN_7
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

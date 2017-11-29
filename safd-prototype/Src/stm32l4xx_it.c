@@ -36,12 +36,24 @@
 #include "stm32l4xx_it.h"
 
 /* USER CODE BEGIN 0 */
+
+#include "buffer.h"
+#include "lsm6ds3.h"
+#include "main.h"
+
+
 extern char rx_buffer[20];
+extern TIM_HandleTypeDef htim3;
+
+extern triple_ring_buffer angular_velocity_buffer_sternum;  //
+extern triple_ring_buffer angular_velocity_buffer_waist;  //
+extern I2C_HandleTypeDef hi2c3;
 
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
 extern DMA_HandleTypeDef hdma_spi3_rx;
+extern TIM_HandleTypeDef htim3;
 extern UART_HandleTypeDef huart4;
 
 /******************************************************************************/
@@ -185,6 +197,47 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32l4xx.s).                    */
 /******************************************************************************/
+
+/**
+* @brief This function handles TIM3 global interrupt.
+*/
+void TIM3_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM3_IRQn 0 */
+
+  /* USER CODE END TIM3_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim3);
+  /* USER CODE BEGIN TIM3_IRQn 1 */
+
+  triplet acc_reading;
+  triplet gyro1_reading;
+  triplet gyro2_reading;
+  LSM6DS3_StatusTypedef acc_read_status = 0;
+  LSM6DS3_StatusTypedef gyro1_read_status = 0;
+  LSM6DS3_StatusTypedef gyro2_read_status = 0;
+
+  gyro1_read_status = gyro_read_xyz(&hi2c3,SENSOR_1,&gyro1_reading);
+
+    if(gyro1_read_status == LSM6DS3_OK)
+    {
+  	  if(isFull(&angular_velocity_buffer_sternum) == BUFFER_AVAILABLE)
+  	  {
+  		  add(&angular_velocity_buffer_sternum,gyro1_reading);
+  	  }
+    }
+
+    gyro2_read_status = gyro_read_xyz(&hi2c3,SENSOR_2,&gyro2_reading);
+    if(gyro2_read_status == LSM6DS3_OK)
+    {
+  	  if(isFull(&angular_velocity_buffer_waist) == BUFFER_AVAILABLE)
+  	  {
+  		  add(&angular_velocity_buffer_waist,gyro2_reading);
+  	  }
+    }
+
+    __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
+  /* USER CODE END TIM3_IRQn 1 */
+}
 
 /**
 * @brief This function handles UART4 global interrupt.
