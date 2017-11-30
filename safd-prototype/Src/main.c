@@ -137,8 +137,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
   HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
-
-  SSD1306_Init();
+/*
+  	SSD1306_Init();
     SSD1306_Flush();
 
     SSD1306_Orientation(LCD_ORIENT_NORMAL);
@@ -152,7 +152,7 @@ int main(void)
     LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
     //for (int i = 0; i < scr_width - 1; i += 16)	LCD_DrawBitmap(i,23,16,17,Go_SAF_D);
     SSD1306_Flush();
-
+*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -164,6 +164,16 @@ int main(void)
   /* USER CODE BEGIN 3 */
 
 	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
+
+	  SSD1306_CS_L();
+	  SSD1306_RST_L();
+	  SSD1306_DC_L();
+	  HAL_Delay(1000);
+	  SSD1306_CS_H();
+	  SSD1306_RST_H();
+	  SSD1306_DC_H();
+	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
+	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 
