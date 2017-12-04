@@ -67,6 +67,7 @@ UART_HandleTypeDef huart4;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 uint8_t rx_buffer[10];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -121,6 +122,7 @@ int main(void)
   MX_I2C3_Init();
   MX_UART4_Init();
   MX_I2C2_Init();
+  //ds2782_init(&hi2c2);
 
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_RESET);
@@ -128,7 +130,6 @@ int main(void)
   uint8_t val = 0;
 
   //DS2782Status return_status = ds2782_init(&hi2c2);
-
   //return_status = readStatusReg(&hi2c2,&val);
   //return_status = ds2782_init(&hi2c2);
 
@@ -140,21 +141,21 @@ int main(void)
 	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
   }
 
-/*
+
 
   for(uint8_t addr=0;addr<=0xFF;addr++)
   {
-	  if(addr != 0xd4 && addr != 0xd5)
-	  {
+
+
 		  status = HAL_I2C_Mem_Read(&hi2c2,addr,0x7E,I2C_MEMADD_SIZE_8BIT,&slave_Addr,1,1000);
 		  if(status == HAL_OK)
 		  {
 			  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
 		  }
-	  }
+
   }
 
-*/
+
 
   /* USER CODE END 2 */
 
@@ -169,6 +170,11 @@ int main(void)
 
   }
   /* USER CODE END 3 */
+  //readRarcReg(&hi2c2, val);
+  //uint8_t val_high = val>>4;
+  //uint8_t val_low = val && 0xF0;
+  //
+  //LCD_PutChar(0, 23, val, fnt7x10);
 
 }
 
