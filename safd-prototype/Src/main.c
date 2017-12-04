@@ -69,7 +69,10 @@ UART_HandleTypeDef huart4;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-uint8_t rx_buffer[10];
+uint8_t rx_buffer[10] = {0};
+uint8_t tx_buffer[10] = {0};
+float voltage[10] = {0.0};
+float current[10] = {0.0};
 
 triple_ring_buffer linear_acceleration_buffer; //
 triple_ring_buffer angular_velocity_buffer_sternum;  //
@@ -84,9 +87,9 @@ static void MX_TIM3_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_I2C3_Init(void);
-static void MX_UART4_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_TIM4_Init(void);
+static void MX_UART4_Init(void);
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                                 
@@ -130,9 +133,10 @@ int main(void)
   MX_SPI1_Init();
   MX_SPI3_Init();
   MX_I2C3_Init();
-  MX_UART4_Init();
   MX_I2C2_Init();
   MX_TIM4_Init();
+  MX_UART4_Init();
+  ds2782_init(&hi2c2);
 
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
@@ -153,6 +157,10 @@ int main(void)
     //for (int i = 0; i < scr_width - 1; i += 16)	LCD_DrawBitmap(i,23,16,17,Go_SAF_D);
     SSD1306_Flush();
 */
+
+  for(int i = 0; i<=10; i++){
+  		  rx_buffer[i] = i * 1.5;
+  	  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -160,7 +168,7 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-	  //HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+
   /* USER CODE BEGIN 3 */
 
 	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
@@ -174,6 +182,11 @@ int main(void)
 	  SSD1306_DC_H();
 	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
 	  HAL_Delay(1000);
+
+	  readVoltage(&hi2c2, &voltage);
+	  HAL_Delay(500);
+	  readCurrent(&hi2c2, &current);
+	  HAL_Delay(500);
   }
   /* USER CODE END 3 */
 

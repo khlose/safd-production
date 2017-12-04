@@ -249,8 +249,7 @@ void UART4_IRQHandler(void)
   /* USER CODE END UART4_IRQn 0 */
   HAL_UART_IRQHandler(&huart4);
   /* USER CODE BEGIN UART4_IRQn 1 */
-  HAL_UART_Receive(&huart4, rx_buffer, 4, 200);
-  rx_buffer[10] = 5;
+
   /* USER CODE END UART4_IRQn 1 */
 }
 
