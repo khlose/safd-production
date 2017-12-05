@@ -130,107 +130,67 @@ int main(void)
   uint8_t charge_status_ret = 0xFF;
 
   //ds2782_init(&hi2c2);
-
-  HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,EEPROM_REG,I2C_MEMADD_SIZE_8BIT,&charge_status_ret,1,100);
-
-  if(status != HAL_OK) Error_Handler();
-/*
+  /*
+  DS2782Status stat = ds2782_initv2(&hi2c2);
+  if(stat != DS2782_OK)
+  {
+	  Error_Handler();
+  }
+*/
 
   HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,0x01,I2C_MEMADD_SIZE_8BIT,&charge_status_ret,1,100);
 
   if(status != HAL_OK) Error_Handler();
-  uint8_t RAAC_MSB = 0;
-  uint8_t RAAC_LSB = 0;
-  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,RAAC_MSB_REG,I2C_MEMADD_SIZE_8BIT,&RAAC_MSB,1,100);
+
+
+  uint8_t rarc_read = 0xFF;
+  uint8_t rsrc_read = 0xFF;
+  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,RARC_REG,I2C_MEMADD_SIZE_8BIT,&rarc_read,1,100);
 
   if(status != HAL_OK) Error_Handler();
-  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,RAAC_LSB_REG,I2C_MEMADD_SIZE_8BIT,&RAAC_LSB,1,100);
+  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,RSRC_REG,I2C_MEMADD_SIZE_8BIT,&rsrc_read,1,100);
+
+  if(status != HAL_OK) Error_Handler();
+  if(rsrc_read != 0)
+  {
+	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
+  }
+  else
+  {
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  }
+
+  if(rarc_read != 0)
+  {
+	  HAL_GPIO_WritePin(LED_D3_PORT,LED_D3_PIN,GPIO_PIN_SET);
+  }
+  else
+  {
+	  HAL_GPIO_WritePin(LED_D3_PORT,LED_D3_PIN,GPIO_PIN_SET);
+  }
+  for(uint8_t addr2 = 0xF0;addr2 <=0xF7;addr2++)
+  {
+	  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,addr2,I2C_MEMADD_SIZE_8BIT,&val,1,100);
+
+	  if(status != HAL_OK) Error_Handler();
+  }
+  for(uint8_t addr = 1;addr <= 0x1c;addr++)
+  {
+	  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,addr,I2C_MEMADD_SIZE_8BIT,&val,1,100);
+
+	  if(status != HAL_OK) Error_Handler();
+  }
 
   if(status != HAL_OK) Error_Handler();
 
+  for(uint8_t addr = 0x60;addr <= 0x7F;addr++)
+  {
+	  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,addr,I2C_MEMADD_SIZE_8BIT,&val,1,100);
 
-  uint8_t vchg_read = 0;
-  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,VCHG,I2C_MEMADD_SIZE_8BIT,&vchg_read,1,100);
-
-  if(status != HAL_OK) Error_Handler();
-
-  uint8_t volt_msb = 0;
-  uint8_t volt_lsb = 0;
-  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,VOLT_MSB_REG,I2C_MEMADD_SIZE_8BIT,&volt_msb,1,100);
-
-  if(status != HAL_OK) Error_Handler();
-
-  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,VOLT_LSB_REG,I2C_MEMADD_SIZE_8BIT,&volt_lsb,1,100);
-
-  if(status != HAL_OK) Error_Handler();
-
-	for(uint8_t addr = 0x60;addr <= 0x7F;addr++)
-	{
-		status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,addr,I2C_MEMADD_SIZE_8BIT,&val,1,100);
-
-		if(status != HAL_OK) Error_Handler();
-	}
+	  if(status != HAL_OK) Error_Handler();
+  }
 
 
-
-	for(uint8_t addr2 = 0xF0;addr2 <=0xF7;addr2++)
-	{
-		status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,addr2,I2C_MEMADD_SIZE_8BIT,&val,1,100);
-
-		if(status != HAL_OK) Error_Handler();
-	}
-
-
-	for(uint8_t addr = 1;addr < 0x1c;addr++)
-	{
-		status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,addr,I2C_MEMADD_SIZE_8BIT,&val,1,100);
-
-		if(status != HAL_OK) Error_Handler();
-	}
-
-	uint8_t acr_msb = 0;
-	uint8_t acr_lsb = 0;
-	uint8_t ae_msb = 0;
-	uint8_t ae_lsb = 0;
-	uint8_t full40_msb = 0;
-	uint8_t full40_lsb = 0;
-	uint8_t as = 0;
-	uint8_t full_msb = 0;
-	uint8_t full_lsb = 0;
-	status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,ACR_MSB_REG,I2C_MEMADD_SIZE_8BIT,&acr_msb,1,100);
-
-	if(status != HAL_OK) Error_Handler();
-
-	status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,ACR_LSB_REG,I2C_MEMADD_SIZE_8BIT,&acr_lsb,1,100);
-
-	if(status != HAL_OK) Error_Handler();
-
-	status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,AE_MSB_REG,I2C_MEMADD_SIZE_8BIT,&ae_msb,1,100);
-
-	if(status != HAL_OK) Error_Handler();
-
-	status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,AE_LSB_REG,I2C_MEMADD_SIZE_8BIT,&ae_lsb,1,100);
-
-	if(status != HAL_OK) Error_Handler();
-	status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,FULL_40_MSB,I2C_MEMADD_SIZE_8BIT,&full40_msb,1,100);
-
-	if(status != HAL_OK) Error_Handler();
-	status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,FULL_40_LSB,I2C_MEMADD_SIZE_8BIT,&full40_lsb,1,100);
-
-	if(status != HAL_OK) Error_Handler();
-
-	status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,AS_REG,I2C_MEMADD_SIZE_8BIT,&as,1,100);
-
-	if(status != HAL_OK) Error_Handler();
-
-	status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,FULL_MSB_REG,I2C_MEMADD_SIZE_8BIT,&full_msb,1,100);
-
-	if(status != HAL_OK) Error_Handler();
-	status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,FULL_LSB_REG,I2C_MEMADD_SIZE_8BIT,&full_lsb,1,100);
-
-	if(status != HAL_OK) Error_Handler();
-
-*/
 
 
   /* USER CODE END 2 */

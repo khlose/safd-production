@@ -92,6 +92,7 @@ typedef enum {
 
 
 DS2782Status ds2782_init(I2C_HandleTypeDef *hi2c);
+DS2782Status ds2782_initv2(I2C_HandleTypeDef *hi2c);
 DS2782Status readRarcReg(I2C_HandleTypeDef *hi2c, uint8_t* rarc_val);
 DS2782Status readStatusReg(I2C_HandleTypeDef *hi2c, uint8_t* status_val);
 DS2782Status readAcrReg(I2C_HandleTypeDef *hi2c, float* acr_val);

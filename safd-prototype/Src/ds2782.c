@@ -97,12 +97,93 @@ DS2782Status ds2782_initv2(I2C_HandleTypeDef *hi2c)
 	if(status != HAL_OK) return DS2782_ERROR;
 
 	uint8_t imin_store = 0x20;
-	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, IMIN, I2C_MEMADD_SIZE_8BIT, &imin,1,1000);
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, IMIN, I2C_MEMADD_SIZE_8BIT, &imin_store,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
 
-	uint8_t vae_store = 0x20;
+	uint8_t vae_store = 0xBD;
 	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, VAE, I2C_MEMADD_SIZE_8BIT, &vae_store,1,1000);
 	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t iae_store = 0x18;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, IAE, I2C_MEMADD_SIZE_8BIT, &iae_store,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t ae40 = 0x06;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, ACTIVE_EMPTY_40, I2C_MEMADD_SIZE_8BIT, &ae40,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t rsnsp_store = 0x06;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, RSNSP, I2C_MEMADD_SIZE_8BIT, &rsnsp_store,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t full40_store1 = 0x0C;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, FULL_40_MSB, I2C_MEMADD_SIZE_8BIT, &full40_store1,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+	uint8_t full40_store2 = 0xB0;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, FULL_40_LSB, I2C_MEMADD_SIZE_8BIT, &full40_store2,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t fullslope_store1 = 0x10;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, FULL_3040_SLOPE, I2C_MEMADD_SIZE_8BIT, &fullslope_store1,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t fullslope_store2 = 0x17;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, FULL_2030_SLOPE, I2C_MEMADD_SIZE_8BIT, &fullslope_store2,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t fullslope_store3 = 0x3C;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, FULL_1020_SLOPE, I2C_MEMADD_SIZE_8BIT, &fullslope_store3,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t fullslope_store4 = 0x49;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, FULL_0010_SLOPE, I2C_MEMADD_SIZE_8BIT, &fullslope_store4,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t aeslope_store1 = 0x06;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, AE_3040_SLOPE, I2C_MEMADD_SIZE_8BIT, &aeslope_store1,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t aeslope_store2 = 0x0D;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, AE_2030_SLOPE, I2C_MEMADD_SIZE_8BIT, &aeslope_store2,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t aeslope_store3 = 0x15;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, AE_1020_SLOPE, I2C_MEMADD_SIZE_8BIT, &aeslope_store3,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t aeslope_store4 = 0x2F;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, AE_0010_SLOPE, I2C_MEMADD_SIZE_8BIT, &aeslope_store4,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t seslope_store1 = 0x03;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, SE_3040_SLOPE, I2C_MEMADD_SIZE_8BIT, &seslope_store1,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t seslope_store2 = 0x05;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, SE_2030_SLOPE, I2C_MEMADD_SIZE_8BIT, &seslope_store2,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t seslope_store3 = 0x08;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, SE_1020_SLOPE, I2C_MEMADD_SIZE_8BIT, &seslope_store3,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t seslope_store4 = 0x1B;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, SE_0010_SLOPE, I2C_MEMADD_SIZE_8BIT, &seslope_store4,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t rsgain1 = 0x04;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, RSGAIN_MSB, I2C_MEMADD_SIZE_8BIT, &rsgain1,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t rsgain2 = 0x1F;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, RSGAIN_LSB, I2C_MEMADD_SIZE_8BIT, &rsgain2,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+	uint8_t rstc_val = 0x00;
+	status = HAL_I2C_Mem_Write(hi2c,DS2782_ADDRESS, RSTC, I2C_MEMADD_SIZE_8BIT, &rstc_val,1,1000);
+	if(status != HAL_OK) return DS2782_ERROR;
+
+
 
 	return return_status;
 }
