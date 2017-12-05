@@ -61,27 +61,27 @@ typedef enum {
    IMIN =0x65,       //Minimum Charge Current
    VAE = 0x66,       //Active Empty Voltage
    IAE = 0x67,       //Active Empty Current
-   ACTIVE_EMPTY_40,
-   RSNSP,     //Sense Resistor Prime
-   FULL_40_MSB,
-   FULL_40_LSB,
-   FULL_3040_SLOPE,
-   FULL_2030_SLOPE,
-   FULL_1020_SLOPE,
-   FULL_0010_SLOPE,
-   AE_3040_SLOPE,
-   AE_2030_SLOPE,
-   AE_1020_SLOPE,
-   AE_0010_SLOPE,
-   SE_3040_SLOPE,
-   SE_2030_SLOPE,
-   SE_1020_SLOPE,
-   SE_0010_SLOPE,
-   RSGAIN_MSB,          //Sense Resistor Gain MSB
-   RSGAIN_LSB,          //Sense Resistor Gain LSB
-   RSTC,                //Sense Resistor Temp. Coeff.
-   FRSGAIN_MSB,         //Factory Gain MSB
-   FRSGAIN_LSB,         //Factory Gain LSB
+   ACTIVE_EMPTY_40 = 0x68,
+   RSNSP = 0x69,     //Sense Resistor Prime
+   FULL_40_MSB = 0x6A,
+   FULL_40_LSB = 0x6B,
+   FULL_3040_SLOPE = 0x6C,
+   FULL_2030_SLOPE = 0x6D,
+   FULL_1020_SLOPE = 0x6E,
+   FULL_0010_SLOPE  = 0x6F,
+   AE_3040_SLOPE  = 0x70,
+   AE_2030_SLOPE = 0x71,
+   AE_1020_SLOPE = 0x72,
+   AE_0010_SLOPE = 0x73,
+   SE_3040_SLOPE = 0x74,
+   SE_2030_SLOPE = 0x75,
+   SE_1020_SLOPE = 0x76,
+   SE_0010_SLOPE = 0x77,
+   RSGAIN_MSB = 0x78,          //Sense Resistor Gain MSB
+   RSGAIN_LSB = 0x79,          //Sense Resistor Gain LSB
+   RSTC = 0x7A,                //Sense Resistor Temp. Coeff.
+   FRSGAIN_MSB = 0x7B,         //Factory Gain MSB
+   FRSGAIN_LSB = 0x7C,         //Factory Gain LSB
    I2C_SLAVE_ADDR= 0x7E //2-Wire Slave Address
 }ParamEepromReg;
 
@@ -98,5 +98,6 @@ DS2782Status readAcrReg(I2C_HandleTypeDef *hi2c, float* acr_val);
 DS2782Status setACRRegister(I2C_HandleTypeDef *hi2c, uint16_t reg);
 DS2782Status readVoltage(I2C_HandleTypeDef *hi2c, float *voltage);
 DS2782Status readCurrent(I2C_HandleTypeDef *hi2c, float *current);
+DS2782Status readUniqueID(I2C_HandleTypeDef *hi2c, uint8_t *id);
 
 #endif /* DS2782_H_ */
