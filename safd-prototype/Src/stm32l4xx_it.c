@@ -52,9 +52,6 @@ extern I2C_HandleTypeDef hi2c3;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern DMA_HandleTypeDef hdma_spi3_rx;
-extern TIM_HandleTypeDef htim3;
-extern UART_HandleTypeDef huart4;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -197,75 +194,6 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32l4xx.s).                    */
 /******************************************************************************/
-
-/**
-* @brief This function handles TIM3 global interrupt.
-*/
-void TIM3_IRQHandler(void)
-{
-  /* USER CODE BEGIN TIM3_IRQn 0 */
-
-  /* USER CODE END TIM3_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim3);
-  /* USER CODE BEGIN TIM3_IRQn 1 */
-
-  triplet acc_reading;
-  triplet gyro1_reading;
-  triplet gyro2_reading;
-  LSM6DS3_StatusTypedef acc_read_status = 0;
-  LSM6DS3_StatusTypedef gyro1_read_status = 0;
-  LSM6DS3_StatusTypedef gyro2_read_status = 0;
-
-  gyro1_read_status = gyro_read_xyz(&hi2c3,SENSOR_1,&gyro1_reading);
-
-    if(gyro1_read_status == LSM6DS3_OK)
-    {
-  	  if(isFull(&angular_velocity_buffer_sternum) == BUFFER_AVAILABLE)
-  	  {
-  		  add(&angular_velocity_buffer_sternum,gyro1_reading);
-  	  }
-    }
-
-    gyro2_read_status = gyro_read_xyz(&hi2c3,SENSOR_2,&gyro2_reading);
-    if(gyro2_read_status == LSM6DS3_OK)
-    {
-  	  if(isFull(&angular_velocity_buffer_waist) == BUFFER_AVAILABLE)
-  	  {
-  		  add(&angular_velocity_buffer_waist,gyro2_reading);
-  	  }
-    }
-
-    __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
-  /* USER CODE END TIM3_IRQn 1 */
-}
-
-/**
-* @brief This function handles UART4 global interrupt.
-*/
-void UART4_IRQHandler(void)
-{
-  /* USER CODE BEGIN UART4_IRQn 0 */
-
-  /* USER CODE END UART4_IRQn 0 */
-  HAL_UART_IRQHandler(&huart4);
-  /* USER CODE BEGIN UART4_IRQn 1 */
-
-  /* USER CODE END UART4_IRQn 1 */
-}
-
-/**
-* @brief This function handles DMA2 channel1 global interrupt.
-*/
-void DMA2_Channel1_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA2_Channel1_IRQn 0 */
-
-  /* USER CODE END DMA2_Channel1_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_spi3_rx);
-  /* USER CODE BEGIN DMA2_Channel1_IRQn 1 */
-
-  /* USER CODE END DMA2_Channel1_IRQn 1 */
-}
 
 /* USER CODE BEGIN 1 */
 
