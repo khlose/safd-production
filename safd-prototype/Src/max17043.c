@@ -37,22 +37,23 @@ uint8_t write16(I2C_HandleTypeDef *hi2c, uint16_t data, uint8_t address)
   msb = (data & 0xFF00) >> 8;
   lsb = (data & 0x00FF);
   max17043_status ret = max17043_ok;
-  HAL_I2C_StateTypeDef stat = HAL_I2C_MEM_Write(hi2c, MAX17043_ADDRESS, address, I2C_MEMADD_SIZE_8BIT, &msb, 1, 100);
+  HAL_I2C_StateTypeDef stat = HAL_I2C_Mem_Write(hi2c, MAX17043_ADDRESS, address, I2C_MEMADD_SIZE_8BIT, &msb, 1, 100);
   if(stat != HAL_OK) ret = max17043_error;
-  stat = HAL_I2C_MEM_Write(hi2c, MAX17043_ADDRESS, address+1, I2C_MEMADD_SIZE_8BIT, &lsb, 1, 100);
+  stat = HAL_I2C_Mem_Write(hi2c, MAX17043_ADDRESS, address+1, I2C_MEMADD_SIZE_8BIT, &lsb, 1, 100);
   if(stat != HAL_OK) ret = max17043_error;
   return (ret);
 }
 
 uint16_t read16(I2C_HandleTypeDef *hi2c, uint8_t address)
 {
-  uint8_t msb, lsb;
+  uint8_t msb= 0xFF;
+  uint8_t lsb = 0xFF;
   int16_t timeout = 1000;
   max17043_status ret = max17043_ok;
 
-  HAL_I2C_StateTypeDef stat = HAL_I2C_MEM_Write(hi2c, MAX17043_ADDRESS, address, I2C_MEMADD_SIZE_8BIT, &msb, 1, 100);
+  HAL_I2C_StateTypeDef stat = HAL_I2C_Mem_Read(hi2c, MAX17043_ADDRESS, address, I2C_MEMADD_SIZE_8BIT, &msb, 1, 100);
   if(stat != HAL_OK) ret = max17043_error;
-  stat = HAL_I2C_MEM_Write(hi2c, MAX17043_ADDRESS, address+1, I2C_MEMADD_SIZE_8BIT, &lsb, 1, 100);
+  stat = HAL_I2C_Mem_Read(hi2c, MAX17043_ADDRESS, address+1, I2C_MEMADD_SIZE_8BIT, &lsb, 1, 100);
   if(stat != HAL_OK) ret = max17043_error;
 
   return ((uint16_t) msb << 8) | lsb;

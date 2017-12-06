@@ -128,7 +128,8 @@ int main(void)
 
   uint8_t val = 0;
   uint8_t charge_status_ret = 0xFF;
-
+  uint16_t version = getVersion(&hi2c2);
+  if(version!= 0)  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
   //ds2782_init(&hi2c2);
   /*
   DS2782Status stat = ds2782_initv2(&hi2c2);
@@ -137,7 +138,7 @@ int main(void)
 	  Error_Handler();
   }
 */
-
+/*
   HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,0x01,I2C_MEMADD_SIZE_8BIT,&charge_status_ret,1,100);
 
   if(status != HAL_OK) Error_Handler();
@@ -191,6 +192,7 @@ int main(void)
   }
 
 
+*/
 
 
   /* USER CODE END 2 */
