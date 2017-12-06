@@ -20,8 +20,8 @@ typedef struct frame
 	uint8_t child;
 	uint8_t a_index;
 	uint8_t b_index;
-	void (* a_function)(void);
-	void (* b_function)(void);
+	void (* a_action)(void);
+	void (* b_action)(void);
 }frame;
 
 
