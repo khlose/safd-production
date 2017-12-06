@@ -77,6 +77,7 @@ triple_ring_buffer angular_velocity_buffer_sternum;  //
 triple_ring_buffer angular_velocity_buffer_waist;  //
 
 frame frame_lookup[10];
+uint8_t arm_status = 0;//arm = 1 unarmed = 0
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -138,9 +139,9 @@ int main(void)
   MX_TIM4_Init();
 
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
-/*
+  //HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+  //HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
+
   	SSD1306_Init();
     SSD1306_Flush();
 
@@ -152,10 +153,10 @@ int main(void)
 
     LCD_PutStr(0,23,"SAF-D",fnt7x10);
     LCD_PutStr(19,scr_height - 15,"TEAM13",fnt7x10);
-    LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
+    //LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
     //for (int i = 0; i < scr_width - 1; i += 16)	LCD_DrawBitmap(i,23,16,17,Go_SAF_D);
     SSD1306_Flush();
-*/
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -163,20 +164,9 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-	  //HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
+
   /* USER CODE BEGIN 3 */
 
-	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
-
-	  SSD1306_CS_L();
-	  SSD1306_RST_L();
-	  SSD1306_DC_L();
-	  HAL_Delay(1000);
-	  SSD1306_CS_H();
-	  SSD1306_RST_H();
-	  SSD1306_DC_H();
-	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
-	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 
@@ -322,11 +312,11 @@ static void MX_SPI1_Init(void)
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi1.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -492,8 +482,8 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
-                          |OLED_RST_Pin|OLED_CS_Pin|GPIO_PIN_9, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, OLED_CS_Pin|LED_D4_Pin|LED_D5_Pin|WIFI_ENABLE_Pin 
+                          |OLED_RST_Pin|GPIO_PIN_9, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
@@ -501,18 +491,24 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(OLED_DC_GPIO_Port, OLED_DC_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PB12 PB13 PB14 PB15 
-                           OLED_RST_Pin OLED_CS_Pin PB9 */
-  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15 
-                          |OLED_RST_Pin|OLED_CS_Pin|GPIO_PIN_9;
+  /*Configure GPIO pins : OLED_CS_Pin LED_D4_Pin LED_D5_Pin WIFI_ENABLE_Pin 
+                           OLED_RST_Pin PB9 */
+  GPIO_InitStruct.Pin = OLED_CS_Pin|LED_D4_Pin|LED_D5_Pin|WIFI_ENABLE_Pin 
+                          |OLED_RST_Pin|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA10 PA11 PA12 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  /*Configure GPIO pin : ARROW_LEFT_Pin */
+  GPIO_InitStruct.Pin = ARROW_LEFT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(ARROW_LEFT_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : ARROW_RIGHT_Pin BUTTON_B_Pin BUTTON_A_Pin */
+  GPIO_InitStruct.Pin = ARROW_RIGHT_Pin|BUTTON_B_Pin|BUTTON_A_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 

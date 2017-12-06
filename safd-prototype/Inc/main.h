@@ -47,12 +47,26 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define OLED_CS_Pin GPIO_PIN_12
+#define OLED_CS_GPIO_Port GPIOB
+#define LED_D4_Pin GPIO_PIN_13
+#define LED_D4_GPIO_Port GPIOB
+#define LED_D5_Pin GPIO_PIN_14
+#define LED_D5_GPIO_Port GPIOB
+#define WIFI_ENABLE_Pin GPIO_PIN_15
+#define WIFI_ENABLE_GPIO_Port GPIOB
+#define ARROW_LEFT_Pin GPIO_PIN_9
+#define ARROW_LEFT_GPIO_Port GPIOC
+#define ARROW_RIGHT_Pin GPIO_PIN_10
+#define ARROW_RIGHT_GPIO_Port GPIOA
+#define BUTTON_B_Pin GPIO_PIN_11
+#define BUTTON_B_GPIO_Port GPIOA
+#define BUTTON_A_Pin GPIO_PIN_12
+#define BUTTON_A_GPIO_Port GPIOA
 #define OLED_DC_Pin GPIO_PIN_2
 #define OLED_DC_GPIO_Port GPIOD
 #define OLED_RST_Pin GPIO_PIN_5
 #define OLED_RST_GPIO_Port GPIOB
-#define OLED_CS_Pin GPIO_PIN_6
-#define OLED_CS_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**
