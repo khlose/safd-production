@@ -64,6 +64,9 @@ TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart4;
 
+float voltage, current = 0.0;
+
+
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 uint8_t rx_buffer[10];
@@ -130,6 +133,8 @@ int main(void)
   uint8_t charge_status_ret = 0xFF;
   uint16_t version = getVersion(&hi2c2);
   if(version!= 0)  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
+  voltage = getVoltage(&hi2c2);
+  current = getSOC(&hi2c2);
   //ds2782_init(&hi2c2);
   /*
   DS2782Status stat = ds2782_initv2(&hi2c2);
