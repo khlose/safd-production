@@ -129,7 +129,15 @@ int main(void)
   HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_RESET);
   HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
 
-  uint8_t val = 0;
+  uint8_t val;
+  /*
+  for(uint8_t addr = 0; addr <= 0xFF; addr++){
+	  HAL_StatusTypeDef stat = HAL_I2C_Mem_Read(&hi2c2, addr, 0x01, I2C_MEMADD_SIZE_8BIT, &val, 1, 100);
+	  if(stat == HAL_OK){
+		  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
+	  }
+  }
+  */
   uint8_t charge_status_ret = 0xFF;
   uint16_t version = getVersion(&hi2c2);
   if(version!= 0)  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);

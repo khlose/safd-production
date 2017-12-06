@@ -28,7 +28,13 @@
 #define MAX17043_COMMAND_POR 0x5400
 
 /* MAX17043 7-Bit I2C Address */
-#define MAX17043_ADDRESS  0x36
+//#define MAX17043_ADDRESS_write  0x6c<<1
+//#define write_addr 0x6c<<1
+//#define read_addr 0x6D<<1
+
+#define write_addr 0x36<<1
+#define read_addr 0x36<<1
+
 
 typedef enum{
 	max17043_ok = 0x01,
@@ -40,7 +46,7 @@ uint8_t quickStart(I2C_HandleTypeDef *hi2c);
 float getVoltage(I2C_HandleTypeDef *hi2c);
 float getSOC(I2C_HandleTypeDef *hi2c);
 uint8_t write16(I2C_HandleTypeDef *hi2c, uint16_t data, uint8_t address);
-uint16_t read16(I2C_HandleTypeDef *hi2c, uint8_t address);
+max17043_status read16(I2C_HandleTypeDef *hi2c, uint8_t address,uint16_t* val);
 uint16_t getVersion(I2C_HandleTypeDef *hi2c);
 
 #endif /* MAX17043_H_ */
