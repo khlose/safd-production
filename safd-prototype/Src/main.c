@@ -128,7 +128,7 @@ int main(void)
   SSD1306_Init();
   SSD1306_Flush();
 
-  SSD1306_Orientation(LCD_ORIENT_NORMAL);
+  SSD1306_Orientation(LCD_ORIENT_180);
 
   SSD1306_Contrast(127);
 
