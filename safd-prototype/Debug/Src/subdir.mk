@@ -9,6 +9,7 @@ C_SRCS += \
 ../Src/fall_detection.c \
 ../Src/lsm6ds3.c \
 ../Src/main.c \
+../Src/max17043.c \
 ../Src/ssd1306.c \
 ../Src/stm32l4xx_hal_msp.c \
 ../Src/stm32l4xx_it.c \
@@ -21,6 +22,7 @@ OBJS += \
 ./Src/fall_detection.o \
 ./Src/lsm6ds3.o \
 ./Src/main.o \
+./Src/max17043.o \
 ./Src/ssd1306.o \
 ./Src/stm32l4xx_hal_msp.o \
 ./Src/stm32l4xx_it.o \
@@ -33,6 +35,7 @@ C_DEPS += \
 ./Src/fall_detection.d \
 ./Src/lsm6ds3.d \
 ./Src/main.d \
+./Src/max17043.d \
 ./Src/ssd1306.d \
 ./Src/stm32l4xx_hal_msp.d \
 ./Src/stm32l4xx_it.d \

@@ -23,6 +23,7 @@
 "Src/fall_detection.o"
 "Src/lsm6ds3.o"
 "Src/main.o"
+"Src/max17043.o"
 "Src/ssd1306.o"
 "Src/stm32l4xx_hal_msp.o"
 "Src/stm32l4xx_it.o"
