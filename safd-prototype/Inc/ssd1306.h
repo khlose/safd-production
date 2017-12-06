@@ -174,7 +174,7 @@ extern uint16_t scr_width;
 extern uint16_t scr_height;
 extern uint8_t LCD_PixelMode;
 
-extern SPI_HandleTypeDef hspi3;
+extern SPI_HandleTypeDef hspi1;
 
 // Function prototypes
 //void SSD1306_InitGPIO(void);

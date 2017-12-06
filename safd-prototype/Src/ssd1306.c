@@ -32,7 +32,7 @@ static void SSD1306_cmd(uint8_t cmd) {
 
 	// Send command to display
 	uint8_t command = cmd;
-	HAL_SPI_Transmit ( &hspi3,  &command, 1, 20) ;
+	HAL_SPI_Transmit ( &hspi1,  &command, 1, 20) ;
 }
 
 // Send double byte command to display
@@ -47,7 +47,7 @@ static void SSD1306_cmd_double(uint8_t cmd1, uint8_t cmd2) {
 	uint8_t command[2];
 	command[0] = cmd1;
 	command[1] = cmd2;
-	HAL_SPI_Transmit ( &hspi3,  command, 2, 20) ;
+	HAL_SPI_Transmit ( &hspi1,  command, 2, 20) ;
 
 }
 
@@ -271,14 +271,14 @@ void SSD1306_Flush(void) {
 	// Set screen address (start draw at 0:0 coordinates)
 	//SPIx_SendBuf(&SSD1306_SPI_PORT,(uint8_t *)SSD1306_SET_ADDR_0x0,sizeof(SSD1306_SET_ADDR_0x0));
 
-	HAL_SPI_Transmit(&hspi3,SSD1306_SET_ADDR_0x0,sizeof(SSD1306_SET_ADDR_0x0),1000);
+	HAL_SPI_Transmit(&hspi1,SSD1306_SET_ADDR_0x0,sizeof(SSD1306_SET_ADDR_0x0),1000);
 	// Assert DC pin -> data transfer
 	SSD1306_DC_H();
 
 	// Transmit video buffer to LCD
 	//SPIx_SendBuf(&SSD1306_SPI_PORT,vRAM,(SCR_W * SCR_H) >> 3);
 
-	HAL_SPI_Transmit(&hspi3,vRAM,(SCR_W * SCR_H) >> 3,1000);
+	HAL_SPI_Transmit(&hspi1,vRAM,(SCR_W * SCR_H) >> 3,1000);
 
 	// Release control pins
 	SSD1306_DC_L();

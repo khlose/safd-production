@@ -136,7 +136,7 @@ int main(void)
 
   LCD_PutStr(0,23,"SAF-D",fnt7x10);
   LCD_PutStr(19,scr_height - 15,"TEAM13",fnt7x10);
-  LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
+  //LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
   //for (int i = 0; i < scr_width - 1; i += 16)	LCD_DrawBitmap(i,23,16,17,Go_SAF_D);
   SSD1306_Flush();
   /* USER CODE END 2 */
@@ -148,16 +148,31 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+/*
+	  SSD1306_Flush();
+
+	    SSD1306_Orientation(LCD_ORIENT_NORMAL);
+
+	    SSD1306_Contrast(127);
+
+	    SSD1306_Fill(0x00);
+
+	    LCD_PutStr(0,23,"SAF-D",fnt7x10);
+	    LCD_PutStr(19,scr_height - 15,"TEAM13",fnt7x10);
+	    LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
+	    //for (int i = 0; i < scr_width - 1; i += 16)	LCD_DrawBitmap(i,23,16,17,Go_SAF_D);
+	    SSD1306_Flush();*/
+
 	  //SSD1306_DC_H();
-	  //SSD1306_CS_L();
+	  //SSD1306_CS_H();
 	  //PC10 sck
-	  HAL_GPIO_WritePin(GPIOC,GPIO_PIN_10,GPIO_PIN_SET);
+	  //HAL_GPIO_WritePin(GPIOC,GPIO_PIN_10,GPIO_PIN_SET);
 	  //PC12 MOSI
 	  //HAL_GPIO_WritePin(GPIOC,GPIO_PIN_12,GPIO_PIN_SET);
 
-	  HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_12);
+	  //HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_12);
 
-	  HAL_Delay(2000);
+	 //HAL_Delay(2000);
 	  /*
 	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
 
@@ -180,6 +195,7 @@ int main(void)
 	  readCurrent(&hi2c2, &current);
 	  HAL_Delay(500);
 	  */
+
   }
   /* USER CODE END 3 */
 
@@ -323,11 +339,11 @@ static void MX_SPI1_Init(void)
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi1.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
