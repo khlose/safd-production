@@ -50,6 +50,7 @@
 #include "buffer.h"
 #include "fall_detection.h"
 #include "util.h"
+#include "user_interface.h"
 //https://github.com/vadzimyatskevich/STM32F103_SSD1306 << OLED lib
 
 /* USER CODE END Includes */
@@ -74,6 +75,8 @@ uint8_t rx_buffer[10];
 triple_ring_buffer linear_acceleration_buffer; //
 triple_ring_buffer angular_velocity_buffer_sternum;  //
 triple_ring_buffer angular_velocity_buffer_waist;  //
+
+frame frame_lookup[10];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/

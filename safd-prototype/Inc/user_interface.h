@@ -11,7 +11,6 @@
 #include "ssd1306.h"
 #include "stm32l4xx_hal.h"
 
-extern oled_message central_message;
 
 typedef struct frame
 {
@@ -20,21 +19,18 @@ typedef struct frame
 	uint8_t parent;
 	uint8_t child;
 	uint8_t a_index;
-	void (* a_function)(void);
 	uint8_t b_index;
+	void (* a_function)(void);
 	void (* b_function)(void);
 }frame;
 
-typedef struct oled_message
-{
-	char string button_a[];
-	char string_button_b[];
-	char string_battery[];
-	char center_message[];
-}oled_message;
+
+
+
 
 void init_userinterface();
-
+void to_child();
+void stay();
 
 
 
