@@ -10,8 +10,8 @@
 
 #include "ssd1306.h"
 #include "stm32l4xx_hal.h"
-#include "font5x7.h";
-#include "font7x10.h";
+#include "font5x7.h"
+#include "font7x10.h"
 
 typedef struct frame
 {

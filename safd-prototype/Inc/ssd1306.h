@@ -4,14 +4,6 @@
 #include "stm32l4xx_hal.h"
 #include "main.h"
 
-// SSD1306 display connection:
-//   PB8 --> CS
-//   PB9 --> RES
-//   PC0 --> DC
-//   PA5 --> D0 (SCK)
-//   PA7 --> D1 (MOSI)
-
-
 // Use bit-banding to draw pixel
 //   0 - use logic operations to set pixel color
 //   1 - use bit-banding to set pixel color
@@ -20,16 +12,12 @@
 // Pixel set function definition
 //   0 - call pixel function (less code size in cost of speed)
 //   1 - inline pixel function (higher speed in cost of code size)
-#define SSD1306_OPT_PIXEL     1
+#define SSD1306_OPT_PIXEL     0
 
 // DMA usage
 //   0 - DMA is not used
 //   1 - compile functions for DMA transfer VRAM to display
 #define SSD1306_USE_DMA       0
-
-
-// GPIO peripherals
-#define SSD1306_GPIO_PERIPH   (RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOCEN)
 
 // SSD1306 RS/A0 (Data/Command select) pin (PD2)
 #define SSD1306_DC_PORT       OLED_DC_GPIO_Port
@@ -37,13 +25,13 @@
 #define SSD1306_DC_H()        HAL_GPIO_WritePin(SSD1306_DC_PORT, SSD1306_DC_PIN,GPIO_PIN_SET)
 #define SSD1306_DC_L()        HAL_GPIO_WritePin(SSD1306_DC_PORT, SSD1306_DC_PIN,GPIO_PIN_RESET)
 
-// SSD1306 RST (Reset) pin (PB5)
+// SSD1306 RST (Reset) pin (PB9)
 #define SSD1306_RST_PORT      OLED_RST_GPIO_Port
 #define SSD1306_RST_PIN       OLED_RST_Pin
 #define SSD1306_RST_H()       HAL_GPIO_WritePin(SSD1306_RST_PORT, SSD1306_RST_PIN,GPIO_PIN_SET)
 #define SSD1306_RST_L()       HAL_GPIO_WritePin(SSD1306_RST_PORT, SSD1306_RST_PIN,GPIO_PIN_RESET)
 
-// SSD1306 CS (Chip Select) pin (PB12)
+// SSD1306 CS (Chip Select) pin (PB8)
 #define SSD1306_CS_PORT       OLED_CS_GPIO_Port
 #define SSD1306_CS_PIN        OLED_CS_Pin
 #define SSD1306_CS_H()        HAL_GPIO_WritePin(SSD1306_CS_PORT, SSD1306_CS_PIN,GPIO_PIN_SET)
@@ -172,7 +160,7 @@ extern uint16_t scr_width;
 extern uint16_t scr_height;
 extern uint8_t LCD_PixelMode;
 
-extern SPI_HandleTypeDef hspi3;
+extern SPI_HandleTypeDef hspi1;
 
 // Function prototypes
 //void SSD1306_InitGPIO(void);

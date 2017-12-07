@@ -23,7 +23,7 @@ void init_userinterface()
 	frame_lookup[0].b_action = stay;
 	frame_lookup[0].a_string = "Menu";
 	frame_lookup[0].b_string = "Home";
-	frame_lookup[0].main_msg = "Status:Not protected";
+	frame_lookup[0].main_msg = "Status:Unarmed";
 	frame_lookup[0].sub_msg = "";
 
 
@@ -144,6 +144,7 @@ void init_userinterface()
 	frame_lookup[9].b_string = "";
 	frame_lookup[9].main_msg = "Data transfer interrupted";
 	frame_lookup[9].sub_msg = "";
+	refresh_oled();
 
 	return;
 }
@@ -182,6 +183,7 @@ void turn_off()
 
 void refresh_oled()
 {
+	/*
 	SSD1306_Flush();
 
 	SSD1306_Orientation(LCD_ORIENT_180);
@@ -193,4 +195,18 @@ void refresh_oled()
 	LCD_PutStr(70,23,frame_lookup[current_frame_index].a_string,fnt7x10);
 	LCD_PutStr(70,scr_height - 15,frame_lookup[current_frame_index].b_string,fnt7x10);
 	SSD1306_Flush();
+	*/
+
+
+	    SSD1306_Flush();
+
+	    SSD1306_Orientation(LCD_ORIENT_180);
+	    SSD1306_Contrast(255);
+	    SSD1306_Fill(0x00);
+
+	    LCD_PutStr(0,23,frame_lookup[current_frame_index].main_msg,fnt7x10);
+	    LCD_PutStr(19,scr_height - 15,"TEAM13",fnt7x10);
+	    //LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
+	    //for (int i = 0; i < scr_width - 1; i += 16)	LCD_DrawBitmap(i,23,16,17,Go_SAF_D);
+	    SSD1306_Flush();
 }
