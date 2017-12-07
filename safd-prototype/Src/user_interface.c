@@ -235,6 +235,8 @@ void get_battery()
 	LCD_PutInt(0,scr_height - 15,batt_percentage,fnt7x10);
 	LCD_PutStr(18,scr_height - 15,"%",fnt7x10);
 
+
+
 	SSD1306_Flush();
 }
 

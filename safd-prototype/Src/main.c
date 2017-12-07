@@ -250,7 +250,21 @@ int main(void)
 
 			  detection_result_sternum = detection_angular_velocity_sternum(gyro_reading1);
 			  detection_result_waist = detection_angular_velocity_waist(gyro_reading2);
-
+	  		  if(detection_result_sternum == EXCEED)
+	  		  {
+	  			  HAL_GPIO_WritePin(LED_D3_PORT, LED_D3_PIN, GPIO_PIN_SET);
+	  		  }
+	  		  if(detection_result_waist == EXCEED)
+	  		  {
+	  			  HAL_GPIO_WritePin(LED_D4_PORT, LED_D4_PIN, GPIO_PIN_SET);
+	  		  }
+	  		  if(detection_result_waist == EXCEED && detection_result_sternum == EXCEED)
+	  		  {
+	  			  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+	  			  HAL_Delay(3000);
+	  			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);
+	  		  }
+/*
 			  if(detection_result_sternum == EXCEED && detection_result_waist == EXCEED)
 			  {
 				  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_SET);
@@ -260,6 +274,7 @@ int main(void)
 				  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_RESET);
 
 			  }
+			  */
 
 			  //decide what to do if detected?
 		  }
