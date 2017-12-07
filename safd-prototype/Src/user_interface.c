@@ -21,9 +21,9 @@ void init_userinterface()
 	frame_lookup[0].b_index = 0;
 	frame_lookup[0].a_action = to_child;
 	frame_lookup[0].b_action = stay;
-	frame_lookup[0].a_string = "Menu";
-	frame_lookup[0].b_string = "Home";
-	frame_lookup[0].main_msg = "Status:Unarmed";
+	frame_lookup[0].a_string = "menu";
+	frame_lookup[0].b_string = "home";
+	frame_lookup[0].main_msg = "status:unarmed";
 	frame_lookup[0].sub_msg = "";
 
 
@@ -35,9 +35,9 @@ void init_userinterface()
 	frame_lookup[1].b_index = 0;
 	frame_lookup[1].a_action = to_child;
 	frame_lookup[1].b_action = to_parent;
-	frame_lookup[1].a_string = "Confirm";
-	frame_lookup[1].b_string = "Back";
-	frame_lookup[1].main_msg = "Arm the system";
+	frame_lookup[1].a_string = "confirm";
+	frame_lookup[1].b_string = "back";
+	frame_lookup[1].main_msg = "arm the system";
 	frame_lookup[1].sub_msg = "";
 
 
@@ -49,9 +49,9 @@ void init_userinterface()
 	frame_lookup[2].b_index = 1;
 	frame_lookup[2].a_action = to_root;
 	frame_lookup[2].b_action = to_parent;
-	frame_lookup[2].a_string = "Confirm";
-	frame_lookup[2].b_string = "Back";
-	frame_lookup[2].main_msg = "Would you like to arm";
+	frame_lookup[2].a_string = "confirm";
+	frame_lookup[2].b_string = "back";
+	frame_lookup[2].main_msg = "would you like to arm";
 	frame_lookup[2].sub_msg = "the system?";
 
 	frame_lookup[3].previous = 1;
@@ -63,8 +63,8 @@ void init_userinterface()
 	frame_lookup[3].a_action = stay;
 	frame_lookup[3].b_action = to_root;
 	frame_lookup[3].a_string = "";
-	frame_lookup[3].b_string = "Back";
-	frame_lookup[3].main_msg = "Battery Level (Voltage, Percentage):";
+	frame_lookup[3].b_string = "back";
+	frame_lookup[3].main_msg = "battery level (voltage, percentage):";
 	frame_lookup[3].sub_msg = "";
 
 	frame_lookup[4].previous = 3;
@@ -75,9 +75,9 @@ void init_userinterface()
 	frame_lookup[4].b_index = 0;
 	frame_lookup[4].a_action = to_child;
 	frame_lookup[4].b_action = to_root;
-	frame_lookup[4].a_string = "Confirm";
-	frame_lookup[4].b_string = "Back";
-	frame_lookup[4].main_msg = "Enable data logging?";
+	frame_lookup[4].a_string = "confirm";
+	frame_lookup[4].b_string = "back";
+	frame_lookup[4].main_msg = "enable data logging?";
 	frame_lookup[4].sub_msg = "";
 
 	frame_lookup[5].previous = 11;
@@ -90,7 +90,7 @@ void init_userinterface()
 	frame_lookup[5].b_action = stay;
 	frame_lookup[5].a_string = "";
 	frame_lookup[5].b_string = "";
-	frame_lookup[5].main_msg = "Enabled";
+	frame_lookup[5].main_msg = "enabled";
 	frame_lookup[5].sub_msg = "";
 
 	frame_lookup[6].previous = 7;
@@ -101,9 +101,9 @@ void init_userinterface()
 	frame_lookup[6].b_index = 0;
 	frame_lookup[6].a_action = to_child;
 	frame_lookup[6].b_action = stay;
-	frame_lookup[6].a_string = "Confirm";
-	frame_lookup[6].b_string = "Back";
-	frame_lookup[6].main_msg = "Power off";
+	frame_lookup[6].a_string = "confirm";
+	frame_lookup[6].b_string = "back";
+	frame_lookup[6].main_msg = "power off";
 	frame_lookup[6].sub_msg = "";
 
 	frame_lookup[7].previous = 4;
@@ -114,9 +114,9 @@ void init_userinterface()
 	frame_lookup[7].b_index = 0;
 	frame_lookup[7].a_action = turn_off;
 	frame_lookup[7].b_action = to_root;
-	frame_lookup[7].a_string = "Menu";
-	frame_lookup[7].b_string = "Home";
-	frame_lookup[7].main_msg = "Transfer recorded data";
+	frame_lookup[7].a_string = "menu";
+	frame_lookup[7].b_string = "home";
+	frame_lookup[7].main_msg = "transfer recorded data";
 	frame_lookup[7].sub_msg = "";
 
 	frame_lookup[8].previous = 11;
@@ -128,8 +128,8 @@ void init_userinterface()
 	frame_lookup[8].a_action = stay;
 	frame_lookup[8].b_action = to_child;
 	frame_lookup[8].a_string = "";
-	frame_lookup[8].b_string = "Cancel";
-	frame_lookup[8].main_msg = "Transferring data...";
+	frame_lookup[8].b_string = "cancel";
+	frame_lookup[8].main_msg = "transferring data...";
 	frame_lookup[8].sub_msg = "";
 
 	frame_lookup[9].previous = 11;
@@ -142,7 +142,7 @@ void init_userinterface()
 	frame_lookup[9].b_action = to_root;
 	frame_lookup[9].a_string = "";
 	frame_lookup[9].b_string = "";
-	frame_lookup[9].main_msg = "Data transfer interrupted";
+	frame_lookup[9].main_msg = "data transfer interrupted";
 	frame_lookup[9].sub_msg = "";
 	refresh_oled();
 
@@ -204,7 +204,7 @@ void refresh_oled()
 
 	SSD1306_Flush();
 
-	SSD1306_Orientation(LCD_ORIENT_NORMAL);
+	SSD1306_Orientation(LCD_ORIENT_180);
 
 	SSD1306_Contrast(127);
 	SSD1306_Fill(0x00);

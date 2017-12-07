@@ -5835,7 +5835,7 @@ LOAD c:/users/station13/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32
                 0x00000609       0x22 c:/users/station13/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.15.0.201708311556/tools/compiler/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/fpv4-sp/hard/crtn.o
 OUTPUT(safd-prototype.elf elf32-littlearm)
 
-.debug_info     0x00000000    0x25fce
+.debug_info     0x00000000    0x25fd2
  .debug_info    0x00000000     0x1313 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
  .debug_info    0x00001313     0x1703 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
  .debug_info    0x00002a16     0x107b Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.o
@@ -5858,7 +5858,7 @@ OUTPUT(safd-prototype.elf elf32-littlearm)
  .debug_info    0x00022572     0x19ba Src/stm32l4xx_it.o
  .debug_info    0x00023f2c      0xde9 Src/system_stm32l4xx.o
  .debug_info    0x00024d15     0x122f Src/user_interface.o
- .debug_info    0x00025f44       0x8a startup/startup_stm32l475xx.o
+ .debug_info    0x00025f44       0x8e startup/startup_stm32l475xx.o
 
 .debug_abbrev   0x00000000     0x3dea
  .debug_abbrev  0x00000000      0x2ec Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
