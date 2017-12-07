@@ -75,6 +75,9 @@ triple_ring_buffer linear_acceleration_buffer; //
 triple_ring_buffer angular_velocity_buffer_sternum;  //
 triple_ring_buffer angular_velocity_buffer_waist;  //
 
+triplet angle_i;
+triplet angular_velocity_i; //Might not need this if we don't use angular acceleration
+
 frame frame_lookup[10];
 uint8_t arm_status;//arm = 1 unarmed = 0
 uint8_t arrow_left_pressed;
@@ -83,8 +86,12 @@ uint8_t button_a_pressed;
 uint8_t button_b_pressed;
 extern int current_frame_index;
 extern frame frame_lookup[10];
+extern ARM_Status arm_flag;
+
 float batt_voltage;
 int batt_percentage;
+
+
 
 /* USER CODE END PV */
 
@@ -144,10 +151,60 @@ int main(void)
   MX_TIM4_Init();
 
   /* USER CODE BEGIN 2 */
+  /*UI Init*/
   SSD1306_Init();
   init_userinterface();
 
+  /*Fall detection Init*/
+  triplet gyro_reading1;
+  triplet gyro_reading2;
+  angular_velocity_i.x = 0;
+  angular_velocity_i.y = 0;
+  angular_velocity_i.z = 0;
 
+  volatile int detection_result_waist=0;
+  volatile int detection_result_sternum=0;
+
+  arm_flag = SYSTEM_UNARMED;
+
+
+  LSM6DS3_StatusTypedef gyro1_init_status,gyro2_init_status;
+
+  //sensor 2 = onboard sensor 1 = external
+  gyro1_init_status = init_gyroscope(&hi2c3,SENSOR_1,dps_250,rate416hz);
+  gyro2_init_status = init_gyroscope(&hi2c2,SENSOR_2,dps_250,rate416hz);
+
+  if(gyro1_init_status != LSM6DS3_OK)
+  {
+	  SSD1306_Flush();
+
+	  SSD1306_Orientation(LCD_ORIENT_180);
+
+	  SSD1306_Contrast(127);
+	  SSD1306_Fill(0x00);
+	  LCD_PutStr(0,23,"Sensor(s)",fnt7x10);
+	  LCD_PutStr(0,scr_height - 15,"not found!",fnt7x10);
+	  SSD1306_Flush();
+	  _Error_Handler(__FILE__, __LINE__);
+  }
+
+  if(gyro2_init_status != LSM6DS3_OK)
+  {
+	  SSD1306_Flush();
+
+	  SSD1306_Orientation(LCD_ORIENT_180);
+
+	  SSD1306_Contrast(127);
+	  SSD1306_Fill(0x00);
+	  LCD_PutStr(0,23,"Sensor(s)",fnt7x10);
+	  LCD_PutStr(0,scr_height - 15,"not found!",fnt7x10);
+	  SSD1306_Flush();
+	  _Error_Handler(__FILE__, __LINE__);
+  }
+
+
+  //this has to be the very last thing
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -157,6 +214,7 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+	  /*UI nav*/
 	  if(arrow_left_pressed == 1)
 	  {
 		  to_prev();
@@ -179,8 +237,34 @@ int main(void)
 	  {
 		  frame_lookup[current_frame_index].b_action();
 		  button_b_pressed = 0;
-
 	  }
+
+
+	  /*active poll*/
+	  if(arm_flag == SYSTEM_ARMED)
+	  {
+		  if(peek(&angular_velocity_buffer_sternum) == BUFFER_AVAILABLE && peek(&angular_velocity_buffer_waist) == BUFFER_AVAILABLE)
+		  {
+			  fetch(&angular_velocity_buffer_sternum, &gyro_reading1);
+			  fetch(&angular_velocity_buffer_waist, &gyro_reading2);
+
+			  detection_result_sternum = detection_angular_velocity_sternum(gyro_reading1);
+			  detection_result_waist = detection_angular_velocity_waist(gyro_reading2);
+
+			  if(detection_result_sternum == EXCEED && detection_result_waist == EXCEED)
+			  {
+				  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_SET);
+				  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15,GPIO_PIN_SET);
+				  HAL_Delay(2000);
+				  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15,GPIO_PIN_RESET);
+				  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_RESET);
+
+			  }
+
+			  //decide what to do if detected?
+		  }
+	  }
+
 
   }
   /* USER CODE END 3 */

@@ -40,7 +40,7 @@
 #include "buffer.h"
 #include "lsm6ds3.h"
 #include "main.h"
-
+#include "user_interface.h"
 
 extern char rx_buffer[20];
 extern TIM_HandleTypeDef htim3;
@@ -52,6 +52,12 @@ extern uint8_t arrow_left_pressed;
 extern uint8_t arrow_right_pressed;
 extern uint8_t button_a_pressed;
 extern uint8_t button_b_pressed;
+extern ARM_Status arm_flag;
+
+
+/* USER CODE BEGIN 0 */
+
+
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -237,24 +243,28 @@ void TIM3_IRQHandler(void)
   LSM6DS3_StatusTypedef gyro1_read_status = 0;
   LSM6DS3_StatusTypedef gyro2_read_status = 0;
 
-  gyro1_read_status = gyro_read_xyz(&hi2c3,SENSOR_1,&gyro1_reading);
+  if(arm_flag == SYSTEM_ARMED)
+  {
+	  gyro1_read_status = gyro_read_xyz(&hi2c3,SENSOR_1,&gyro1_reading);
 
-    if(gyro1_read_status == LSM6DS3_OK)
-    {
-  	  if(isFull(&angular_velocity_buffer_sternum) == BUFFER_AVAILABLE)
-  	  {
-  		  add(&angular_velocity_buffer_sternum,gyro1_reading);
-  	  }
-    }
+	  if(gyro1_read_status == LSM6DS3_OK)
+	  {
+		  if(isFull(&angular_velocity_buffer_sternum) == BUFFER_AVAILABLE)
+		  {
+			  add(&angular_velocity_buffer_sternum,gyro1_reading);
+	  	  }
+	  }
 
-    gyro2_read_status = gyro_read_xyz(&hi2c3,SENSOR_2,&gyro2_reading);
-    if(gyro2_read_status == LSM6DS3_OK)
-    {
-  	  if(isFull(&angular_velocity_buffer_waist) == BUFFER_AVAILABLE)
-  	  {
-  		  add(&angular_velocity_buffer_waist,gyro2_reading);
-  	  }
-    }
+	  gyro2_read_status = gyro_read_xyz(&hi2c3,SENSOR_2,&gyro2_reading);
+	  if(gyro2_read_status == LSM6DS3_OK)
+	  {
+		  if(isFull(&angular_velocity_buffer_waist) == BUFFER_AVAILABLE)
+		  {
+			  add(&angular_velocity_buffer_waist,gyro2_reading);
+	  	  }
+	  }
+  }
+
 
     __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
   /* USER CODE END TIM3_IRQn 1 */

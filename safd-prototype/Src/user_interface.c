@@ -23,9 +23,9 @@ void init_userinterface()
 	frame_lookup[0].b_action = stay;
 	frame_lookup[0].a_string = "menu";
 	frame_lookup[0].b_string = "home";
-	frame_lookup[0].main_msg = "status:unarmed";
+	frame_lookup[0].main_msg = "status:";
 
-	frame_lookup[0].sub_msg = "";
+	frame_lookup[0].sub_msg = "unarmed";
 
 
 	frame_lookup[1].previous = 6;
@@ -38,7 +38,7 @@ void init_userinterface()
 	frame_lookup[1].b_action = to_parent;
 	frame_lookup[1].a_string = "confirm";
 	frame_lookup[1].b_string = "back";
-	frame_lookup[1].main_msg = "arm the system";
+	frame_lookup[1].main_msg = "switch arm/unarm";
 	frame_lookup[1].sub_msg = "";
 
 
@@ -48,12 +48,12 @@ void init_userinterface()
 	frame_lookup[2].child = 11;
 	frame_lookup[2].a_index = 0;
 	frame_lookup[2].b_index = 1;
-	frame_lookup[2].a_action = to_root;
+	frame_lookup[2].a_action = arm_to_root;
 	frame_lookup[2].b_action = to_parent;
 	frame_lookup[2].a_string = "confirm";
 	frame_lookup[2].b_string = "back";
-	frame_lookup[2].main_msg = "would you like to arm";
-	frame_lookup[2].sub_msg = "the system?";
+	frame_lookup[2].main_msg = "switch? current:";
+	frame_lookup[2].sub_msg = "unarmed";
 
 	frame_lookup[3].previous = 1;
 	frame_lookup[3].next = 4;
@@ -159,6 +159,25 @@ void to_child()
 void stay()
 {
 
+}
+
+void arm_to_root()
+{
+
+	if(arm_flag == SYSTEM_ARMED)
+	{
+		arm_flag = SYSTEM_UNARMED;
+		frame_lookup[0].sub_msg = "unarmed";
+		frame_lookup[2].sub_msg = "unarmed";
+	}
+	else
+	{
+		arm_flag = SYSTEM_ARMED;
+		frame_lookup[0].sub_msg = "armed";
+		frame_lookup[2].sub_msg = "armed";
+	}
+	current_frame_index = 0;
+	refresh_oled();
 }
 void to_root()
 {

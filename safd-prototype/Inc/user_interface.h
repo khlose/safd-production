@@ -35,6 +35,15 @@ typedef struct frame
 
 }frame;
 
+
+typedef enum
+{
+	SYSTEM_ARMED = 0x00,
+	SYSTEM_UNARMED
+}ARM_Status;
+
+ARM_Status arm_flag;
+
 frame frame_lookup[10];
 int current_frame_index;
 
@@ -46,6 +55,7 @@ void init_userinterface();
 void to_child();
 void stay();
 void to_root();
+void arm_to_root();
 void to_parent();
 void delayed_to_root(int sec);
 void turn_off();
