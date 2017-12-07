@@ -36,7 +36,8 @@ Src/main.o: ../Src/main.c \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ds2782.h \
- C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/max17043.h
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/main.h:
 
@@ -113,3 +114,5 @@ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ds2782.h:
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/max17043.h:

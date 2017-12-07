@@ -45,7 +45,7 @@
 #include "ds2782.h"
 #include "font7x10.h"
 #include <string.h>
-
+#include "max17043.h"
 
 //https://github.com/vadzimyatskevich/STM32F103_SSD1306 << OLED lib
 
@@ -64,7 +64,9 @@ TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart4;
 
-float voltage, current = 0.0;
+float voltage;
+float current;
+uint16_t volt,percent = 0;
 
 
 /* USER CODE BEGIN PV */
@@ -130,82 +132,18 @@ int main(void)
   HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_RESET);
 
   uint8_t val;
-  /*
-  for(uint8_t addr = 0; addr <= 0xFF; addr++){
-	  HAL_StatusTypeDef stat = HAL_I2C_Mem_Read(&hi2c2, addr, 0x01, I2C_MEMADD_SIZE_8BIT, &val, 1, 100);
-	  if(stat == HAL_OK){
-		  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
-	  }
-  }
-  */
+
   uint8_t charge_status_ret = 0xFF;
   uint16_t version = getVersion(&hi2c2);
   if(version!= 0)  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
   voltage = getVoltage(&hi2c2);
   current = getSOC(&hi2c2);
-  //ds2782_init(&hi2c2);
-  /*
-  DS2782Status stat = ds2782_initv2(&hi2c2);
-  if(stat != DS2782_OK)
+
+
+  if(voltage != 0.0)
   {
-	  Error_Handler();
+	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_RESET);
   }
-*/
-/*
-  HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,0x01,I2C_MEMADD_SIZE_8BIT,&charge_status_ret,1,100);
-
-  if(status != HAL_OK) Error_Handler();
-
-
-  uint8_t rarc_read = 0xFF;
-  uint8_t rsrc_read = 0xFF;
-  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,RARC_REG,I2C_MEMADD_SIZE_8BIT,&rarc_read,1,100);
-
-  if(status != HAL_OK) Error_Handler();
-  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,RSRC_REG,I2C_MEMADD_SIZE_8BIT,&rsrc_read,1,100);
-
-  if(status != HAL_OK) Error_Handler();
-  if(rsrc_read != 0)
-  {
-	  HAL_GPIO_WritePin(LED_D4_PORT,LED_D4_PIN,GPIO_PIN_SET);
-  }
-  else
-  {
-	  HAL_GPIO_WritePin(LED_D5_PORT,LED_D5_PIN,GPIO_PIN_SET);
-  }
-
-  if(rarc_read != 0)
-  {
-	  HAL_GPIO_WritePin(LED_D3_PORT,LED_D3_PIN,GPIO_PIN_SET);
-  }
-  else
-  {
-	  HAL_GPIO_WritePin(LED_D3_PORT,LED_D3_PIN,GPIO_PIN_SET);
-  }
-  for(uint8_t addr2 = 0xF0;addr2 <=0xF7;addr2++)
-  {
-	  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,addr2,I2C_MEMADD_SIZE_8BIT,&val,1,100);
-
-	  if(status != HAL_OK) Error_Handler();
-  }
-  for(uint8_t addr = 1;addr <= 0x1c;addr++)
-  {
-	  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,addr,I2C_MEMADD_SIZE_8BIT,&val,1,100);
-
-	  if(status != HAL_OK) Error_Handler();
-  }
-
-  if(status != HAL_OK) Error_Handler();
-
-  for(uint8_t addr = 0x60;addr <= 0x7F;addr++)
-  {
-	  status = HAL_I2C_Mem_Read(&hi2c2,DS2782_ADDRESS,addr,I2C_MEMADD_SIZE_8BIT,&val,1,100);
-
-	  if(status != HAL_OK) Error_Handler();
-  }
-
-
-*/
 
 
   /* USER CODE END 2 */

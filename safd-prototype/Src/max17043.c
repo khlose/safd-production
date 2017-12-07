@@ -13,23 +13,25 @@ uint8_t quickStart(I2C_HandleTypeDef *hi2c){
 
 float getVoltage(I2C_HandleTypeDef *hi2c){
 	uint16_t vCell;
+	uint16_t voltage_calc;
 	max17043_status stat = read16(hi2c,MAX17043_VCELL,&vCell);
 
 	//vCell = read16(hi2c,MAX17043_VCELL,);
 	// vCell is a 12-bit register where each bit represents 1.25mV
-	vCell = (vCell) >> 4;
+	//vCell = (vCell) >> 4;
+	voltage_calc = vCell/16;
+	float return_voltage = voltage_calc*1.25/1000;
 
-	return ((float) vCell / 800.0);
+	return return_voltage;
 }
 
-float getSOC(I2C_HandleTypeDef *hi2c)
+int getSOC(I2C_HandleTypeDef *hi2c)
 {
   uint16_t soc;
-  float percent;
+  int percent;
   max17043_status stat = read16(hi2c,MAX17043_SOC,&soc);
   percent = (soc & 0xFF00) >> 8;
-  percent += (float) (((uint8_t) soc) / 256.0);
-
+  if(percent > 100) percent = 100;
   return percent;
 }
 

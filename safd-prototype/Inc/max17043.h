@@ -44,7 +44,7 @@ typedef enum{
 /****************************************/
 uint8_t quickStart(I2C_HandleTypeDef *hi2c);
 float getVoltage(I2C_HandleTypeDef *hi2c);
-float getSOC(I2C_HandleTypeDef *hi2c);
+int getSOC(I2C_HandleTypeDef *hi2c);
 uint8_t write16(I2C_HandleTypeDef *hi2c, uint16_t data, uint8_t address);
 max17043_status read16(I2C_HandleTypeDef *hi2c, uint8_t address,uint16_t* val);
 uint16_t getVersion(I2C_HandleTypeDef *hi2c);
