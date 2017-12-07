@@ -12,6 +12,11 @@
 #include "stm32l4xx_hal.h"
 #include "font5x7.h"
 #include "font7x10.h"
+#include "max17043.h"
+#include <string.h>
+#include <stdlib.h>
+#include "main.h"
+
 
 typedef struct frame
 {
@@ -33,7 +38,9 @@ typedef struct frame
 frame frame_lookup[10];
 int current_frame_index;
 
-
+extern float batt_voltage;
+extern int batt_percentage;
+extern I2C_HandleTypeDef hi2c2;
 
 void init_userinterface();
 void to_child();
@@ -45,5 +52,6 @@ void turn_off();
 void refresh_oled();
 void to_next();
 void to_prev();
+void get_battery();
 
 #endif /* USER_INTERFACE_H_ */

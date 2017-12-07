@@ -51,6 +51,7 @@
 #include "fall_detection.h"
 #include "util.h"
 #include "user_interface.h"
+#include "max17043.h"
 //https://github.com/vadzimyatskevich/STM32F103_SSD1306 << OLED lib
 
 /* USER CODE END Includes */
@@ -82,6 +83,9 @@ uint8_t button_a_pressed;
 uint8_t button_b_pressed;
 extern int current_frame_index;
 extern frame frame_lookup[10];
+float batt_voltage;
+int batt_percentage;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -103,6 +107,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+
 
 /* USER CODE END 0 */
 
@@ -452,7 +457,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, OLED_CS_Pin|LED_D4_Pin|LED_D5_Pin|WIFI_ENABLE_Pin 
-                          |OLED_RST_Pin|GPIO_PIN_9, GPIO_PIN_RESET);
+                          |OLED_RST_Pin|POWER_OFF_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
@@ -461,9 +466,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(OLED_DC_GPIO_Port, OLED_DC_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : OLED_CS_Pin LED_D4_Pin LED_D5_Pin WIFI_ENABLE_Pin 
-                           OLED_RST_Pin PB9 */
+                           OLED_RST_Pin POWER_OFF_Pin */
   GPIO_InitStruct.Pin = OLED_CS_Pin|LED_D4_Pin|LED_D5_Pin|WIFI_ENABLE_Pin 
-                          |OLED_RST_Pin|GPIO_PIN_9;
+                          |OLED_RST_Pin|POWER_OFF_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

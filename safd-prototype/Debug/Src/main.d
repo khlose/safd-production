@@ -46,7 +46,9 @@ Src/main.o: ../Src/main.c \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/user_interface.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font5x7.h \
- C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/max17043.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/max17043.h
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/main.h:
 
@@ -143,3 +145,7 @@ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font5x7.h:
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/max17043.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/max17043.h:

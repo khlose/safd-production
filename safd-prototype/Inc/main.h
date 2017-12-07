@@ -71,6 +71,8 @@
 #define OLED_DC_GPIO_Port GPIOD
 #define OLED_RST_Pin GPIO_PIN_5
 #define OLED_RST_GPIO_Port GPIOB
+#define POWER_OFF_Pin GPIO_PIN_9
+#define POWER_OFF_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**

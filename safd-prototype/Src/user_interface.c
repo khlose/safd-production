@@ -61,7 +61,7 @@ void init_userinterface()
 	frame_lookup[3].child = 11;
 	frame_lookup[3].a_index = 0;
 	frame_lookup[3].b_index = 0;
-	frame_lookup[3].a_action = stay;
+	frame_lookup[3].a_action = get_battery;
 	frame_lookup[3].b_action = to_root;
 	frame_lookup[3].a_string = "";
 	frame_lookup[3].b_string = "back";
@@ -198,6 +198,25 @@ void delayed_to_root(int sec)
 void turn_off()
 {
 	//assert the pin here
+	HAL_GPIO_WritePin(POWER_OFF_GPIO_Port,POWER_OFF_Pin,GPIO_PIN_SET);
+}
+
+void get_battery()
+{
+	batt_voltage = getVoltage(&hi2c2);
+	batt_percentage = getSOC(&hi2c2);
+
+	SSD1306_Flush();
+
+	SSD1306_Orientation(LCD_ORIENT_180);
+
+	SSD1306_Contrast(127);
+	SSD1306_Fill(0x00);
+	LCD_PutStr(0,23,frame_lookup[current_frame_index].main_msg,fnt7x10);
+	LCD_PutInt(0,scr_height - 15,batt_percentage,fnt7x10);
+	LCD_PutStr(18,scr_height - 15,"%",fnt7x10);
+
+	SSD1306_Flush();
 }
 
 void refresh_oled()
