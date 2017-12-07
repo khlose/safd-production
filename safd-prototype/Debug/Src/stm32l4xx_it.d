@@ -33,7 +33,11 @@ Src/stm32l4xx_it.o: ../Src/stm32l4xx_it.c \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/stm32l4xx_it.h
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/stm32l4xx_it.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/lsm6ds3.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/main.h
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 
@@ -104,3 +108,11 @@ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/stm32l4xx_it.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/lsm6ds3.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/main.h:

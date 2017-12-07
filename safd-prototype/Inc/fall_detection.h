@@ -19,20 +19,21 @@
 #define NOT_A_FALL 0x00
 #define FALL 0x01
 
-#define FT1_S 1.5 /*angular velocity threshold rad/s at sternum level*/
-#define FT1_W 1.74 /*angular velocity threshold rad/s at waist level*/
+#define FT1_S 2.27 /*old = 1.5 angular velocity threshold rad/s at sternum level*/
+#define FT1_W 1.74 /*old = 1.74 angular velocity threshold rad/s at waist level*/
 #define FT2 0.05 /*rad/s^2*/
 #define FT3 0.59
 
 
 float magnitude(float x, float y, float z);
 
-int detection_angular_velocity(triplet angular_v, triplet angular_v_i, triplet angle, float DTime);
+int detection_angular_velocity_sternum(triplet angular_v_sternum);
+int detection_angular_velocity_waist(triplet angular_v_waist);
+
 void calculate_angular_acceleration(triplet v_f,triplet v_i, float DTime,triplet* angular_ac);
 void average_velocity(triplet* angular_velocity1, triplet* angular_velocity2);
 int compare_angular_threshold(triplet* angular_velocity, triplet InitAngle, float DTime, triplet velocity);
-/*waist and sternum sensor simple angular velocity detection*/
-int detection_waist_sternum_ang_v(triplet angular_velocity_sternum,triplet angular_velocity_waist);
+
 
 
 /*Compute an angle using complementary filter, result stores in angle_f in rad*/

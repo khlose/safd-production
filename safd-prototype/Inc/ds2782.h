@@ -9,8 +9,8 @@
 #define DS2782_H_
 #include "stm32l4xx_hal.h"
 
-#define DS2782_ADDRESS 0x68
-//#define DS2782_ADDRESS ((uint8_t)0x34<<1)
+//#define DS2782_ADDRESS 0x68
+#define DS2782_ADDRESS ((uint8_t)0x34<<1)
 //#define DS2782_ADDRESS ((uint8_t)0x34>>1)
 
 

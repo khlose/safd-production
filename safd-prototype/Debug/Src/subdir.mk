@@ -13,6 +13,7 @@ C_SRCS += \
 ../Src/stm32l4xx_hal_msp.c \
 ../Src/stm32l4xx_it.c \
 ../Src/system_stm32l4xx.c \
+../Src/user_interface.c \
 ../Src/util.c 
 
 OBJS += \
@@ -25,6 +26,7 @@ OBJS += \
 ./Src/stm32l4xx_hal_msp.o \
 ./Src/stm32l4xx_it.o \
 ./Src/system_stm32l4xx.o \
+./Src/user_interface.o \
 ./Src/util.o 
 
 C_DEPS += \
@@ -37,6 +39,7 @@ C_DEPS += \
 ./Src/stm32l4xx_hal_msp.d \
 ./Src/stm32l4xx_it.d \
 ./Src/system_stm32l4xx.d \
+./Src/user_interface.d \
 ./Src/util.d 
 
 

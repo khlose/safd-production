@@ -32,7 +32,7 @@ static void SSD1306_cmd(uint8_t cmd) {
 
 	// Send command to display
 	uint8_t command = cmd;
-	HAL_SPI_Transmit ( &hspi3,  &command, 1, 20) ;
+	HAL_SPI_Transmit ( &hspi1,  &command, 1, 20) ;
 }
 
 // Send double byte command to display
@@ -47,45 +47,12 @@ static void SSD1306_cmd_double(uint8_t cmd1, uint8_t cmd2) {
 	uint8_t command[2];
 	command[0] = cmd1;
 	command[1] = cmd2;
-	HAL_SPI_Transmit ( &hspi3,  command, 2, 20) ;
+	HAL_SPI_Transmit ( &hspi1,  command, 2, 20) ;
 
 }
 
-/*
-// Send data byte to display
-// input:
-//   data - data byte
-static void SSD1306_data(uint8_t data) {
-	// Assert DC pin -> data transmit
-	SSD1306_DC_H();
 
-	// Send data byte to display
-	SPIx_Send(&SSD1306_SPI_PORT,data);
-}
-*/
 
-// Initialize the display control GPIO pins
-/*
-void SSD1306_InitGPIO(void) {
-	// Enable the GPIO peripheral(s) clock
-	RCC->AHBENR |= SSD1306_GPIO_PERIPH;
-
-	// Configure CS pin as push-pull output with pull-up
-	GPIO_set_mode(SSD1306_CS_PORT,GPIO_Mode_OUT,GPIO_PUPD_PU,SSD1306_CS_PIN);
-	GPIO_out_cfg(SSD1306_CS_PORT,GPIO_OT_PP,GPIO_SPD_VERYLOW,SSD1306_CS_PIN);
-	SSD1306_CS_H();
-
-	// Configure DC pin as push-pull output with pull-up
-	GPIO_set_mode(SSD1306_DC_PORT,GPIO_Mode_OUT,GPIO_PUPD_PU,SSD1306_DC_PIN);
-	GPIO_out_cfg(SSD1306_DC_PORT,GPIO_OT_PP,GPIO_SPD_VERYLOW,SSD1306_DC_PIN);
-	SSD1306_DC_L();
-
-	// Configure RST pin as push-pull output with pull-up
-	GPIO_set_mode(SSD1306_RST_PORT,GPIO_Mode_OUT,GPIO_PUPD_PU,SSD1306_RST_PIN);
-	GPIO_out_cfg(SSD1306_RST_PORT,GPIO_OT_PP,GPIO_SPD_VERYLOW,SSD1306_RST_PIN);
-	SSD1306_RST_H();
-}
-*/
 
 // Initialize SPI peripheral and SSD1306 display
 // note: SPI peripheral must be initialized before
@@ -271,14 +238,14 @@ void SSD1306_Flush(void) {
 	// Set screen address (start draw at 0:0 coordinates)
 	//SPIx_SendBuf(&SSD1306_SPI_PORT,(uint8_t *)SSD1306_SET_ADDR_0x0,sizeof(SSD1306_SET_ADDR_0x0));
 
-	HAL_SPI_Transmit(&hspi3,SSD1306_SET_ADDR_0x0,sizeof(SSD1306_SET_ADDR_0x0),1000);
+	HAL_SPI_Transmit(&hspi1,SSD1306_SET_ADDR_0x0,sizeof(SSD1306_SET_ADDR_0x0),1000);
 	// Assert DC pin -> data transfer
 	SSD1306_DC_H();
 
 	// Transmit video buffer to LCD
 	//SPIx_SendBuf(&SSD1306_SPI_PORT,vRAM,(SCR_W * SCR_H) >> 3);
 
-	HAL_SPI_Transmit(&hspi3,vRAM,(SCR_W * SCR_H) >> 3,1000);
+	HAL_SPI_Transmit(&hspi1,vRAM,(SCR_W * SCR_H) >> 3,1000);
 
 	// Release control pins
 	SSD1306_DC_L();
@@ -286,28 +253,6 @@ void SSD1306_Flush(void) {
 }
 
 
-/*
-#if (SSD1306_USE_DMA)
-// Send vRAM buffer into display using DMA
-// note: application must deassert the CS pin after end of transmit
-void SSD1306_Flush_DMA(void) {
-	SSD1306_DC_L();
-	SSD1306_CS_L();
-
-	// Set screen address (start draw at 0:0 coordinates)
-	SPIx_SendBuf(&SSD1306_SPI_PORT,(uint8_t *)SSD1306_SET_ADDR_0x0,sizeof(SSD1306_SET_ADDR_0x0));
-
-	// Assert DC pin -> data transfer
-	SSD1306_DC_H();
-
-	// Configure the DMA transfer
-	SPIx_Configure_DMA_TX(&SSD1306_SPI_PORT,vRAM,(SCR_W * SCR_H) >> 3);
-
-	// Enable the DMA channel
-	SPIx_SetDMA(&SSD1306_SPI_PORT,SPI_DMA_TX,ENABLE);
-}
-#endif // SSD1306_USE_DMA
-*/
 // Fill vRAM memory with specified pattern
 // input:
 //   pattern - byte to fill vRAM buffer
