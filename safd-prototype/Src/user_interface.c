@@ -16,7 +16,7 @@ void init_userinterface()
 	frame_lookup[0].previous = 0;
 	frame_lookup[0].next = 0;
 	frame_lookup[0].parent = 0;
-	frame_lookup[0].child = 0;
+	frame_lookup[0].child = 1;
 	frame_lookup[0].a_index = 1;
 	frame_lookup[0].b_index = 0;
 	frame_lookup[0].a_action = to_child;
@@ -169,6 +169,24 @@ void to_parent()
 	current_frame_index = frame_lookup[current_frame_index].parent;
 	refresh_oled();
 }
+void to_next()
+{
+	  if(frame_lookup[current_frame_index].next <10)
+	  {
+		  current_frame_index = frame_lookup[current_frame_index].next;
+		  refresh_oled();
+	  }
+
+
+}
+void to_prev()
+{
+	  if(frame_lookup[current_frame_index].previous <10)
+	  {
+		  current_frame_index = frame_lookup[current_frame_index].previous;
+		  refresh_oled();
+	  }
+}
 void delayed_to_root(int sec)
 {
 	HAL_Delay(sec*1000);
@@ -183,30 +201,32 @@ void turn_off()
 
 void refresh_oled()
 {
-	/*
+
 	SSD1306_Flush();
 
-	SSD1306_Orientation(LCD_ORIENT_180);
+	SSD1306_Orientation(LCD_ORIENT_NORMAL);
 
 	SSD1306_Contrast(127);
 	SSD1306_Fill(0x00);
 	LCD_PutStr(0,23,frame_lookup[current_frame_index].main_msg,fnt7x10);
 	LCD_PutStr(0,scr_height - 15,frame_lookup[current_frame_index].sub_msg,fnt7x10);
-	LCD_PutStr(70,23,frame_lookup[current_frame_index].a_string,fnt7x10);
-	LCD_PutStr(70,scr_height - 15,frame_lookup[current_frame_index].b_string,fnt7x10);
+
+	//LCD_PutStr(60,23,frame_lookup[current_frame_index].a_string,fnt7x10);
+	//LCD_PutStr(60,scr_height - 15,frame_lookup[current_frame_index].b_string,fnt7x10);
 	SSD1306_Flush();
-	*/
 
 
+/*
 	    SSD1306_Flush();
 
 	    SSD1306_Orientation(LCD_ORIENT_180);
 	    SSD1306_Contrast(255);
 	    SSD1306_Fill(0x00);
 
-	    LCD_PutStr(0,23,frame_lookup[current_frame_index].main_msg,fnt7x10);
-	    LCD_PutStr(19,scr_height - 15,"TEAM13",fnt7x10);
+	    //LCD_PutStr(0,23,frame_lookup[current_frame_index].main_msg,fnt7x10);
+	    //LCD_PutStr(19,scr_height - 15,"#########",fnt7x10);
 	    //LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
 	    //for (int i = 0; i < scr_width - 1; i += 16)	LCD_DrawBitmap(i,23,16,17,Go_SAF_D);
 	    SSD1306_Flush();
+	    */
 }

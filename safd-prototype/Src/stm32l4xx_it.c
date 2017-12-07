@@ -48,7 +48,10 @@ extern TIM_HandleTypeDef htim3;
 extern triple_ring_buffer angular_velocity_buffer_sternum;  //
 extern triple_ring_buffer angular_velocity_buffer_waist;  //
 extern I2C_HandleTypeDef hi2c3;
-
+extern uint8_t arrow_left_pressed;
+extern uint8_t arrow_right_pressed;
+extern uint8_t button_a_pressed;
+extern uint8_t button_b_pressed;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -198,6 +201,25 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+* @brief This function handles EXTI line[9:5] interrupts.
+*/
+void EXTI9_5_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI9_5_IRQn 0 */
+	uint32_t pending = EXTI->PR1;
+	if(pending & (1 << 9))
+	{
+		arrow_left_pressed = 1;
+		// handle pin 5 here
+	}
+  /* USER CODE END EXTI9_5_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_9);
+  /* USER CODE BEGIN EXTI9_5_IRQn 1 */
+
+  /* USER CODE END EXTI9_5_IRQn 1 */
+}
+
+/**
 * @brief This function handles TIM3 global interrupt.
 */
 void TIM3_IRQHandler(void)
@@ -236,6 +258,34 @@ void TIM3_IRQHandler(void)
 
     __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
   /* USER CODE END TIM3_IRQn 1 */
+}
+
+/**
+* @brief This function handles EXTI line[15:10] interrupts.
+*/
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+	  uint32_t pending = EXTI->PR1;
+	  if(pending & (1 << 10)) {
+		  arrow_right_pressed = 1;
+	      // handle pin 5 here
+	  }
+	  if(pending & (1 << 11)) {
+		  button_b_pressed = 1;
+	      // handle pin 6 here
+	  }
+	  if(pending & (1 << 12)) {
+		  button_a_pressed = 1;
+	  }
+
+
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_11);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_12);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+  /* USER CODE END EXTI15_10_IRQn 1 */
 }
 
 /**

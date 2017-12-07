@@ -43,5 +43,7 @@ void to_parent();
 void delayed_to_root(int sec);
 void turn_off();
 void refresh_oled();
+void to_next();
+void to_prev();
 
 #endif /* USER_INTERFACE_H_ */

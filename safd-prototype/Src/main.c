@@ -75,7 +75,13 @@ triple_ring_buffer angular_velocity_buffer_sternum;  //
 triple_ring_buffer angular_velocity_buffer_waist;  //
 
 frame frame_lookup[10];
-uint8_t arm_status = 0;//arm = 1 unarmed = 0
+uint8_t arm_status;//arm = 1 unarmed = 0
+uint8_t arrow_left_pressed;
+uint8_t arrow_right_pressed;
+uint8_t button_a_pressed;
+uint8_t button_b_pressed;
+extern int current_frame_index;
+extern frame frame_lookup[10];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -137,22 +143,6 @@ int main(void)
   init_userinterface();
 
 
-/*
-  	SSD1306_Init();
-    SSD1306_Flush();
-
-    SSD1306_Orientation(LCD_ORIENT_180);
-
-    SSD1306_Contrast(127);
-
-    SSD1306_Fill(0x00);
-
-    LCD_PutStr(0,23,"SAF-D",fnt7x10);
-    LCD_PutStr(19,scr_height - 15,"TEAM13",fnt7x10);
-    //LCD_FillRect(0,18,scr_width - 1,scr_height - 20);
-    //for (int i = 0; i < scr_width - 1; i += 16)	LCD_DrawBitmap(i,23,16,17,Go_SAF_D);
-    SSD1306_Flush();
-*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -162,6 +152,30 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+	  if(arrow_left_pressed == 1)
+	  {
+		  to_prev();
+		  arrow_left_pressed = 0;
+
+	  }
+	  if(arrow_right_pressed == 1)
+	  {
+		  to_next();
+		  arrow_right_pressed = 0;
+
+	  }
+	  if(button_a_pressed == 1)
+	  {
+		  frame_lookup[current_frame_index].a_action();
+		  button_a_pressed = 0;
+
+	  }
+	  if(button_b_pressed == 1)
+	  {
+		  frame_lookup[current_frame_index].b_action();
+		  button_b_pressed = 0;
+
+	  }
 
   }
   /* USER CODE END 3 */
@@ -480,6 +494,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(OLED_DC_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 

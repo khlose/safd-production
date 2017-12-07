@@ -253,28 +253,6 @@ void SSD1306_Flush(void) {
 }
 
 
-/*
-#if (SSD1306_USE_DMA)
-// Send vRAM buffer into display using DMA
-// note: application must deassert the CS pin after end of transmit
-void SSD1306_Flush_DMA(void) {
-	SSD1306_DC_L();
-	SSD1306_CS_L();
-
-	// Set screen address (start draw at 0:0 coordinates)
-	SPIx_SendBuf(&SSD1306_SPI_PORT,(uint8_t *)SSD1306_SET_ADDR_0x0,sizeof(SSD1306_SET_ADDR_0x0));
-
-	// Assert DC pin -> data transfer
-	SSD1306_DC_H();
-
-	// Configure the DMA transfer
-	SPIx_Configure_DMA_TX(&SSD1306_SPI_PORT,vRAM,(SCR_W * SCR_H) >> 3);
-
-	// Enable the DMA channel
-	SPIx_SetDMA(&SSD1306_SPI_PORT,SPI_DMA_TX,ENABLE);
-}
-#endif // SSD1306_USE_DMA
-*/
 // Fill vRAM memory with specified pattern
 // input:
 //   pattern - byte to fill vRAM buffer
