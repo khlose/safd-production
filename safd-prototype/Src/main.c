@@ -45,6 +45,7 @@
 #include "ds2782.h"
 #include "font7x10.h"
 #include <string.h>
+#include "beeper.h"
 
 #include "lsm6ds3.h"
 #include "buffer.h"
@@ -154,6 +155,7 @@ int main(void)
   /*UI Init*/
   SSD1306_Init();
   init_userinterface();
+  batt_percentage = getSOC(&hi2c2);
 
   /*Fall detection Init*/
   triplet gyro_reading1;
@@ -172,7 +174,7 @@ int main(void)
 
   //sensor 2 = onboard sensor 1 = external
   gyro1_init_status = init_gyroscope(&hi2c3,SENSOR_1,dps_250,rate416hz);
-  gyro2_init_status = init_gyroscope(&hi2c2,SENSOR_2,dps_250,rate416hz);
+  gyro2_init_status = init_gyroscope(&hi2c3,SENSOR_2,dps_250,rate416hz);
 
   if(gyro1_init_status != LSM6DS3_OK)
   {
@@ -205,6 +207,9 @@ int main(void)
 
   //this has to be the very last thing
   HAL_TIM_Base_Start_IT(&htim3);
+  HAL_TIM_Base_Start_IT(&htim4);
+  //HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+  HAL_TIM_IC_Start(&htim4, TIM_CHANNEL_3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -219,24 +224,28 @@ int main(void)
 	  {
 		  to_prev();
 		  arrow_left_pressed = 0;
+		  HAL_TIM_PeriodBeeper(&htim4,2);
 
 	  }
 	  if(arrow_right_pressed == 1)
 	  {
 		  to_next();
 		  arrow_right_pressed = 0;
+		  HAL_TIM_PeriodBeeper(&htim4,2);
 
 	  }
 	  if(button_a_pressed == 1)
 	  {
 		  frame_lookup[current_frame_index].a_action();
 		  button_a_pressed = 0;
+		  HAL_TIM_PeriodBeeper(&htim4,2);
 
 	  }
 	  if(button_b_pressed == 1)
 	  {
 		  frame_lookup[current_frame_index].b_action();
 		  button_b_pressed = 0;
+		  HAL_TIM_PeriodBeeper(&htim4,2);
 	  }
 
 
@@ -252,17 +261,25 @@ int main(void)
 			  detection_result_waist = detection_angular_velocity_waist(gyro_reading2);
 	  		  if(detection_result_sternum == EXCEED)
 	  		  {
-	  			  HAL_GPIO_WritePin(LED_D3_PORT, LED_D3_PIN, GPIO_PIN_SET);
+	  			  HAL_GPIO_WritePin(LED_D4_PORT, LED_D4_PIN, GPIO_PIN_SET);
 	  		  }
 	  		  if(detection_result_waist == EXCEED)
 	  		  {
-	  			  HAL_GPIO_WritePin(LED_D4_PORT, LED_D4_PIN, GPIO_PIN_SET);
+	  			  HAL_GPIO_WritePin(LED_D5_PORT, LED_D5_PIN, GPIO_PIN_SET);
 	  		  }
 	  		  if(detection_result_waist == EXCEED && detection_result_sternum == EXCEED)
 	  		  {
+				  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_SET);
+				  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15,GPIO_PIN_SET);
+				  HAL_Delay(2000);
+				  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15,GPIO_PIN_RESET);
+				  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_RESET);
+				  /*
 	  			  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
 	  			  HAL_Delay(3000);
-	  			HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);
+	  			  HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2);
+				  */
+
 	  		  }
 /*
 			  if(detection_result_sternum == EXCEED && detection_result_waist == EXCEED)
@@ -275,9 +292,11 @@ int main(void)
 
 			  }
 			  */
-
 			  //decide what to do if detected?
 		  }
+	  }
+	  if(batt_percentage <= 20){
+		  HAL_TIM_PeriodBeeper(&htim4,4);
 	  }
 
 
@@ -483,6 +502,7 @@ static void MX_TIM4_Init(void)
 
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_OC_InitTypeDef sConfigOC;
+  TIM_IC_InitTypeDef sConfigIC;
 
   htim4.Instance = TIM4;
   htim4.Init.Prescaler = 24;
@@ -495,6 +515,11 @@ static void MX_TIM4_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
+  if (HAL_TIM_IC_Init(&htim4) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
@@ -503,10 +528,19 @@ static void MX_TIM4_Init(void)
   }
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 23;
+  sConfigOC.Pulse = 3;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
+  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
+  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
+  sConfigIC.ICFilter = 0;
+  if (HAL_TIM_IC_ConfigChannel(&htim4, &sConfigIC, TIM_CHANNEL_3) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }

@@ -44,6 +44,7 @@
 
 extern char rx_buffer[20];
 extern TIM_HandleTypeDef htim3;
+extern I2C_HandleTypeDef hi2c2;
 
 extern triple_ring_buffer angular_velocity_buffer_sternum;  //
 extern triple_ring_buffer angular_velocity_buffer_waist;  //

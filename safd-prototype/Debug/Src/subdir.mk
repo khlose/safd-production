@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/beeper.c \
 ../Src/buffer.c \
 ../Src/ds2782.c \
 ../Src/fall_detection.c \
@@ -18,6 +19,7 @@ C_SRCS += \
 ../Src/util.c 
 
 OBJS += \
+./Src/beeper.o \
 ./Src/buffer.o \
 ./Src/ds2782.o \
 ./Src/fall_detection.o \
@@ -32,6 +34,7 @@ OBJS += \
 ./Src/util.o 
 
 C_DEPS += \
+./Src/beeper.d \
 ./Src/buffer.d \
 ./Src/ds2782.d \
 ./Src/fall_detection.d \

@@ -18,11 +18,12 @@
 #define BELOW 0x00
 #define NOT_A_FALL 0x00
 #define FALL 0x01
+// 2.27 1.74
+//2.27 1.14
+//1.74 1.14 ->Working
+#define FT1_S 1.5 /*old = 1.5 angular velocity threshold rad/s at sternum level 2.27*/
+#define FT1_W 1.14 /*old = 1.74 angular velocity threshold rad/s at waist level 1.1?*/
 
-#define FT1_S 2.27 /*old = 1.5 angular velocity threshold rad/s at sternum level*/
-#define FT1_W 1.74 /*old = 1.74 angular velocity threshold rad/s at waist level*/
-#define FT2 0.05 /*rad/s^2*/
-#define FT3 0.59
 
 
 float magnitude(float x, float y, float z);

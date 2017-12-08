@@ -113,11 +113,11 @@ void init_userinterface()
 	frame_lookup[7].child = 8;
 	frame_lookup[7].a_index = 8;
 	frame_lookup[7].b_index = 0;
-	frame_lookup[7].a_action = to_child;
+	frame_lookup[7].a_action = reset_processor;
 	frame_lookup[7].b_action = to_root;
 	frame_lookup[7].a_string = "menu";
 	frame_lookup[7].b_string = "home";
-	frame_lookup[7].main_msg = "transfer data";
+	frame_lookup[7].main_msg = "reset";
 	frame_lookup[7].sub_msg = "";
 
 	frame_lookup[8].previous = 11;
@@ -239,6 +239,11 @@ void get_battery()
 
 	SSD1306_Flush();
 }
+void reset_processor()
+{
+	HAL_NVIC_SystemReset();
+}
+
 
 void refresh_oled()
 {

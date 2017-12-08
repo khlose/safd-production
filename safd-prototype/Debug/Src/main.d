@@ -37,6 +37,7 @@ Src/main.o: ../Src/main.c \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ds2782.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h \
+ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/beeper.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/lsm6ds3.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h \
  C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/buffer.h \
@@ -125,6 +126,8 @@ C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ssd1306.h
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/ds2782.h:
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/font7x10.h:
+
+C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/beeper.h:
 
 C:/Users/Station13/Documents/GitHub/safd-production/safd-prototype/Inc/lsm6ds3.h:
 

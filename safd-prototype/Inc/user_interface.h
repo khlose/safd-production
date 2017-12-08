@@ -63,5 +63,5 @@ void refresh_oled();
 void to_next();
 void to_prev();
 void get_battery();
-
+void reset_processor();
 #endif /* USER_INTERFACE_H_ */
